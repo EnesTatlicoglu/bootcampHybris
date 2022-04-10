@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+ Copyright (c) 2021 SAP SE or an SAP affiliate company. All rights reserved.
+-->
+<!--
+	ATTENTION: This is just an example file. You have to edit it according to your needs.
+-->
+
+<items 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		  xsi:noNamespaceSchemaLocation="items.xsd">
+
+	<enumtypes>
+		<enumtype code="BadgeStatus" dynamic="false">
+			<value code="ACTIVE"/>
+			<value code="PASSIVE"/>
+		</enumtype>
+
+		<enumtype code="BadgeGroup" dynamic="true">
+		</enumtype>
+	</enumtypes>
+
+	<itemtypes>
+		<itemtype code="ProductBadge" generate="true" autocreate="true">
+			<deployment table="productbadges" typecode="20500"/>
+			<attributes>
+				<attribute qualifier="code" type="java.lang.String">
+					<description>Unique code of the badge</description>
+					<modifiers unique="true"/>
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="logo" type="java.lang.String">
+					<description>URL of the badge logo</description>
+					<persistence type="property">
+						<columntype>
+							<!-- Set as LONG_STRING since URL can be longer than 255 characters-->
+							<value>HYBRIS.LONG_STRING</value>
+						</columntype>
+					</persistence>
+				</attribute>
+				<attribute qualifier="startDate" type="java.util.Date">
+					<description>Start date</description>
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="endDate" type="java.util.Date">
+					<description>End date</description>
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="status" type="BadgeStatus">
+					<modifiers optional="false"/>
+					<defaultvalue>em().getEnumerationValue("BadgeStatus", "PASSIVE")</defaultvalue>
+					<persistence type="property"/>
+				</attribute>
+				<attribute qualifier="group" type="BadgeGroup">
+					<persistence type="property"/>
+				</attribute>
+			</attributes>
+			<indexes>
+				<index name="codeIDX">
+					<key attribute="code"/>
+				</index>
+			</indexes>
+		</itemtype>
+
+		<itemtype code="Brand" generate="true" autocreate="true">
+			<deployment table="brands" typecode="20501"/>
+			<attributes>
+				<attribute qualifier="code" type="java.lang.String">
+					<description>Unique code of the brand</description>
+					<modifiers unique="true"/>
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="name" type="java.lang.String">
+					<description>Name of the brand</description>
+					<persistence type="property" />
+				</attribute>
+			</attributes>
+		</itemtype>
+	</itemtypes>
+</items>
