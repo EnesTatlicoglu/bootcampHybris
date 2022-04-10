@@ -1,0 +1,35 @@
+/log
+/config
+/data
+/temp
+/bin/*
+!/bin/custom
+/roles
+
+# Automatically generated files
+**/classes/
+**/gensrc/
+**/web/addonsrc/
+**/web/addontestsrc/
+**/web/commonwebsrc/
+**/web/testclasses/
+**/web/webroot/_ui/addons/
+**/web/webroot/cmscockpit/
+**/web/webroot/cockpit/
+**/web/webroot/productcockpit/
+**/web/webroot/WEB-INF/addons/
+**/web/webroot/WEB-INF/classes/
+**/web/webroot/WEB-INF/messages/addons/
+**/web/webroot/WEB-INF/tags/addons/
+**/web/webroot/WEB-INF/tld/addons/
+**/web/webroot/WEB-INF/views/addons/
+**/beans.xsd
+**/extensioninfo.xsd
+**/items.xsd
+**/build.xml
+**/platformhome.properties
+
+# IDE Files
+**/eclipsebin
+.idea/*
+*.iml
