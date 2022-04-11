@@ -19,6 +19,27 @@
 		</enumtype>
 	</enumtypes>
 
+	<relations>
+		<relation code="Product2ProductBadge" localized="false">
+			<deployment table="product2productbadge" typecode="20502"/>
+			<sourceElement type="Product" qualifier="products" collectiontype="set" cardinality="many" ordered="false">
+				<modifiers read="true" write="true" search="true" optional="true" />
+			</sourceElement>
+			<targetElement type="ProductBadge" qualifier="badges" collectiontype="set" cardinality="many">
+				<modifiers read="true" write="true" search="true" optional="true" />
+			</targetElement>
+		</relation>
+
+		<relation code="Product2Brand" localized="false">
+			<sourceElement qualifier="products" type="Product" collectiontype="set" cardinality="many" ordered="false">
+				<modifiers read="true" write="true" search="true" optional="true" />
+			</sourceElement>
+			<targetElement qualifier="brand" type="Brand" cardinality="one">
+				<modifiers read="true" write="true" search="true" optional="true" />
+			</targetElement>
+		</relation>
+	</relations>
+
 	<itemtypes>
 		<itemtype code="ProductBadge" generate="true" autocreate="true">
 			<deployment table="productbadges" typecode="20500"/>
