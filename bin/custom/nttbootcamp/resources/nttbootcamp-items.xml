@@ -41,9 +41,22 @@
 	</relations>
 
 	<itemtypes>
+		<itemtype code="Product" generate="false" autocreate="false">
+			<attributes>
+				<attribute qualifier="badgeCount" type="java.lang.Integer">
+					<persistence type="dynamic"/>
+					<modifiers write="false"/>
+				</attribute>
+			</attributes>
+		</itemtype>
+
 		<itemtype code="ProductBadge" generate="true" autocreate="true">
 			<deployment table="productbadges" typecode="20500"/>
 			<attributes>
+				<attribute qualifier="visible" type="boolean">
+					<persistence type="dynamic" attributeHandler="productBadgeVisibleAttributeHandler"/>
+					<modifiers write="false"/>
+				</attribute>
 				<attribute qualifier="code" type="java.lang.String">
 					<description>Unique code of the badge</description>
 					<modifiers unique="true"/>
