@@ -53,6 +53,18 @@
 		<itemtype code="ProductBadge" generate="true" autocreate="true">
 			<deployment table="productbadges" typecode="20500"/>
 			<attributes>
+				<attribute qualifier="title" type="localized:java.lang.String">
+					<description>Title of the badge</description>
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="description" type="localized:java.lang.String">
+					<description>Description of the badge</description>
+					<persistence type="property">
+						<columntype>
+							<value>HYBRIS.LONG_STRING</value>
+						</columntype>
+					</persistence>
+				</attribute>
 				<attribute qualifier="visible" type="boolean">
 					<persistence type="dynamic" attributeHandler="productBadgeVisibleAttributeHandler"/>
 					<modifiers write="false"/>
