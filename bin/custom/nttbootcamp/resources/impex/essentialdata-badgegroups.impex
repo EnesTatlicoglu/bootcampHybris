@@ -1,0 +1,4 @@
+$lang = en
+INSERT_UPDATE BadgeGroup; code[unique = true]; name[lang = $lang]
+                        ; CAMPAIGN           ; Campaign
+                        ; INFORMATION        ; Information

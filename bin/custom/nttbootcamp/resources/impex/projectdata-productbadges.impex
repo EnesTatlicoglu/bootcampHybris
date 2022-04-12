@@ -1,0 +1,6 @@
+$lang = en
+INSERT_UPDATE ProductBadge; code[unique = true]; title[lang = $lang] ; description[lang = $lang]                                                                   ; startDate[dateformat = 'yyyy-MM-dd']; endDate[dateformat = 'yyyy-MM-dd']; status(code); group(code)
+                          ; FREE_SHIPPING      ; "Free Shipping"     ; "Free shipping is applied when product added to cart"                                       ; 2021-01-01                          ; 2022-12-31                        ; ACTIVE      ; CAMPAIGN
+                          ; 24M_WARRANTY       ; "24-Month Warranty" ; "This product includes 24-month warranty"                                                   ;                                     ;                                   ; ACTIVE      ; INFORMATION
+                          ; 12M_WARRANTY       ; "12-Month Warranty" ; "This product includes 12-month warranty"                                                   ;                                     ;                                   ; ACTIVE      ; INFORMATION
+                          ; EXPRESS_DELIVERY   ; "Express Delivery"  ; "Will be sent with express delivery if the order is placed between 01.06.2021 - 31.05.2022" ; 2021-06-01                          ; 2022-05-31                        ; ACTIVE      ; CAMPAIGN
