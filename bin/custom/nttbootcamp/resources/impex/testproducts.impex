@@ -1,0 +1,8 @@
+$lang = en
+$catalogVersion = catalogVersion(catalog(id[default='Default']), version[default='Staged'])[unique=true]
+
+INSERT_UPDATE Product; code[unique = true]; name[lang = $lang]; badges(code); $catalogVersion
+                     ; P0001              ; Test Product      ; FREE_SHIPPING,24M_WARRANTY
+                     ; P0002              ; Express Product   ; EXPRESS_DELIVERY,12M_WARRANTY,FREE_SHIPPING
+                     ; P0003              ; Sample Product    ; EXPRESS_DELIVERY,FREE_SHIPPING
+                     ; P0004              ; Example Product   ; 24M_WARRANTY

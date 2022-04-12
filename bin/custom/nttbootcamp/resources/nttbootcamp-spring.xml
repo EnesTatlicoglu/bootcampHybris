@@ -92,5 +92,8 @@
 
     <bean id="productBadgeVisibleAttributeHandler" class="tr.nttdata.bootcamp.attributehandler.ProductBadgeVisibleAttributeHandler"/>
     <bean id="Product_badgeCountAttributeHandler" class="tr.nttdata.bootcamp.attributehandler.ProductBadgeCountAttributeHandler"/>
-			
+
+    <bean id="bootcampSystemSetup" class="tr.nttdata.bootcamp.setup.BootcampSystemSetup" >
+        <constructor-arg ref="importService"/>
+    </bean>
 </beans>
