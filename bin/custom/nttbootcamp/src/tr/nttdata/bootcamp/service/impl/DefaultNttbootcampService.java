@@ -13,11 +13,12 @@ import de.hybris.platform.servicelayer.search.FlexibleSearchQuery;
 import de.hybris.platform.servicelayer.search.FlexibleSearchService;
 
 import java.io.InputStream;
-import java.util.Optional;
+import java.util.*;
 
 import de.hybris.platform.servicelayer.user.UserConstants;
 import de.hybris.platform.servicelayer.user.UserService;
 import de.hybris.platform.util.Config;
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Required;
 
 import org.springframework.beans.factory.annotation.Value;
+import tr.nttdata.bootcamp.enums.BadgeStatus;
+import tr.nttdata.bootcamp.model.ProductBadgeModel;
 import tr.nttdata.bootcamp.service.NttbootcampService;
 
 
@@ -61,27 +64,50 @@ public class DefaultNttbootcampService implements NttbootcampService
 	{
 		final MediaModel media = mediaService.getMedia(logoCode);
 
-		final String mime = mimeService.getMimeFromFirstBytes(mediaService.getDataFromMedia(media));
-		LOG.info("Mime of {} is {}", logoCode, mime);
-
 		// Keep in mind that with Slf4j you don't need to check if debug is enabled, it is done under the hood.
 		LOG.debug("Found media [code: {}]", media.getCode());
 
-		LOG.info("Configuration property by Spring annotation {}", propertyByAnnotation);
-		LOG.info("Configuration property by Spring XML configuration {}", propertyByXML);
+		searchForBadgeModels();
 
-		LOG.info("Configuration property by Hybris configuration (initial) {}", initialPropertyByConfig);
-		LOG.info("Configuration property by Hybris configuration (initial, with default) {}", initialPropertyByConfigWithDefaultValue);
+		LOG.info("***************************************");
+		searchForBadgeCodes();
 
-		Long runtimePropertyByConfig = Config.getLong("nttdata.property.with.config.runtime", 0);
-		LOG.info("Configuration property by Hybris configuration (runtime) {}", runtimePropertyByConfig);
-		LOG.info("******************************************");
-		if(userService.getUserForUID(UserConstants.ANONYMOUS_CUSTOMER_UID) != null){
-			LOG.info("Found anonymous user");
-		}
-		LOG.info("******************************************");
+		LOG.info("***************************************");
+		searchForMultipleColumns();
 
 		return media.getURL();
+	}
+
+	private void searchForBadgeModels(){
+		LOG.info("Searching for ProductBadge Models");
+		FlexibleSearchQuery fsq = new FlexibleSearchQuery("SELECT {PK} FROM {ProductBadge} WHERE {status} = ?status");
+		fsq.addQueryParameter("status", BadgeStatus.ACTIVE);
+		List<ProductBadgeModel> result = flexibleSearchService.<ProductBadgeModel>search(fsq).getResult();
+		if(CollectionUtils.isNotEmpty(result)){
+			result.forEach(r -> LOG.info("Code: {}", r.getCode()));
+		}
+	}
+	private void searchForBadgeCodes(){
+		LOG.info("Searching for ProductBadge codes");
+		FlexibleSearchQuery fsq = new FlexibleSearchQuery("SELECT {code} FROM {ProductBadge} WHERE {status} = ?status");
+		fsq.addQueryParameter("status", BadgeStatus.ACTIVE);
+		fsq.setResultClassList(Collections.singletonList(String.class));
+		List<String> result = flexibleSearchService.<String>search(fsq).getResult();
+		if(CollectionUtils.isNotEmpty(result)){
+			result.forEach(r -> LOG.info("Code: {}", r));
+		}
+	}
+
+	private void searchForMultipleColumns(){
+		LOG.info("Searching for multiple columns");
+		FlexibleSearchQuery fsq = new FlexibleSearchQuery("SELECT {code}, {title}, {creationtime} FROM {ProductBadge} WHERE {status} = ?status");
+		fsq.addQueryParameter("status", BadgeStatus.ACTIVE);
+		fsq.setResultClassList(Arrays.asList(String.class, String.class, Date.class));
+		List<List<Object>> result = flexibleSearchService.<List<Object>>search(fsq).getResult();
+
+		if(CollectionUtils.isNotEmpty(result)){
+			result.forEach(r -> LOG.info("Code: {}, Title: {}, Creation Time: {}", r.get(0), r.get(1), r.get(2)));
+		}
 	}
 
 	@Override
