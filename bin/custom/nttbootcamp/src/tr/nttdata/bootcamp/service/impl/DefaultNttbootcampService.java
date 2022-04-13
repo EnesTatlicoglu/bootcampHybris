@@ -4,8 +4,13 @@
 package tr.nttdata.bootcamp.service.impl;
 
 import de.hybris.platform.catalog.model.CatalogUnawareMediaModel;
+import de.hybris.platform.core.model.ItemModel;
+import de.hybris.platform.core.model.enumeration.EnumerationValueModel;
+import de.hybris.platform.core.model.link.LinkModel;
 import de.hybris.platform.core.model.media.MediaModel;
+import de.hybris.platform.core.model.product.ProductModel;
 import de.hybris.platform.media.services.MimeService;
+import de.hybris.platform.search.restriction.SearchRestrictionService;
 import de.hybris.platform.servicelayer.exceptions.SystemException;
 import de.hybris.platform.servicelayer.media.MediaService;
 import de.hybris.platform.servicelayer.model.ModelService;
@@ -15,6 +20,9 @@ import de.hybris.platform.servicelayer.search.FlexibleSearchService;
 import java.io.InputStream;
 import java.util.*;
 
+import de.hybris.platform.servicelayer.search.SearchResult;
+import de.hybris.platform.servicelayer.session.SessionExecutionBody;
+import de.hybris.platform.servicelayer.session.SessionService;
 import de.hybris.platform.servicelayer.user.UserConstants;
 import de.hybris.platform.servicelayer.user.UserService;
 import de.hybris.platform.util.Config;
@@ -26,6 +34,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Required;
 
 import org.springframework.beans.factory.annotation.Value;
+import tr.nttdata.bootcamp.dao.ProductBadgeDao;
+import tr.nttdata.bootcamp.enums.BadgeGroup;
 import tr.nttdata.bootcamp.enums.BadgeStatus;
 import tr.nttdata.bootcamp.model.ProductBadgeModel;
 import tr.nttdata.bootcamp.service.NttbootcampService;
@@ -39,25 +49,7 @@ public class DefaultNttbootcampService implements NttbootcampService
 	private ModelService modelService;
 	private FlexibleSearchService flexibleSearchService;
 
-	@Value("${nttdata.property.with.spring.annotation}")
-	private String propertyByAnnotation;
-
-	private Integer propertyByXML;
-	public void setPropertyByXML(Integer propertyByXML) {
-		this.propertyByXML = propertyByXML;
-	}
-
-	private String initialPropertyByConfig = Config.getParameter("nttdata.property.with.config.initial");
-	private Boolean initialPropertyByConfigWithDefaultValue = Config.getBoolean("nttdata.property.with.config.initial.with.default", false);
-
-	private MimeService mimeService;
-	public void setMimeService(MimeService mimeService) {
-		this.mimeService = mimeService;
-	}
-
-	@Autowired
-	@Qualifier("userService")
-	private UserService userService;
+	private ProductBadgeDao productBadgeDao;
 
 	@Override
 	public String getHybrisLogoUrl(final String logoCode)
@@ -67,46 +59,40 @@ public class DefaultNttbootcampService implements NttbootcampService
 		// Keep in mind that with Slf4j you don't need to check if debug is enabled, it is done under the hood.
 		LOG.debug("Found media [code: {}]", media.getCode());
 
-		searchForBadgeModels();
-
-		LOG.info("***************************************");
-		searchForBadgeCodes();
-
-		LOG.info("***************************************");
-		searchForMultipleColumns();
+		testBadgeSearch();
 
 		return media.getURL();
 	}
 
-	private void searchForBadgeModels(){
-		LOG.info("Searching for ProductBadge Models");
-		FlexibleSearchQuery fsq = new FlexibleSearchQuery("SELECT {PK} FROM {ProductBadge} WHERE {status} = ?status");
-		fsq.addQueryParameter("status", BadgeStatus.ACTIVE);
-		List<ProductBadgeModel> result = flexibleSearchService.<ProductBadgeModel>search(fsq).getResult();
-		if(CollectionUtils.isNotEmpty(result)){
-			result.forEach(r -> LOG.info("Code: {}", r.getCode()));
-		}
-	}
-	private void searchForBadgeCodes(){
-		LOG.info("Searching for ProductBadge codes");
-		FlexibleSearchQuery fsq = new FlexibleSearchQuery("SELECT {code} FROM {ProductBadge} WHERE {status} = ?status");
-		fsq.addQueryParameter("status", BadgeStatus.ACTIVE);
-		fsq.setResultClassList(Collections.singletonList(String.class));
-		List<String> result = flexibleSearchService.<String>search(fsq).getResult();
-		if(CollectionUtils.isNotEmpty(result)){
-			result.forEach(r -> LOG.info("Code: {}", r));
-		}
-	}
+	private void testBadgeSearch(){
+		List<ProductBadgeModel> badges = productBadgeDao.findActiveBadges();
+		String leastModifiedBadge = null;
+		if(CollectionUtils.isNotEmpty(badges)){
+			LOG.info("Printing active badges ordered by ");
+			for(int i = 0; i < badges.size(); i++){
+				ProductBadgeModel badge = badges.get(i);
+				LOG.info("Badge: {}, Status: {}, StartDate: {}, EndDate: {}, ModifiedTime: {}",
+						badge.getCode(), badge.getStatus(), badge.getStartDate(), badge.getEndDate(), badge.getModifiedtime());
+				if(i == badges.size() - 1){
+					leastModifiedBadge = badge.getCode();
+				}
+			}
 
-	private void searchForMultipleColumns(){
-		LOG.info("Searching for multiple columns");
-		FlexibleSearchQuery fsq = new FlexibleSearchQuery("SELECT {code}, {title}, {creationtime} FROM {ProductBadge} WHERE {status} = ?status");
-		fsq.addQueryParameter("status", BadgeStatus.ACTIVE);
-		fsq.setResultClassList(Arrays.asList(String.class, String.class, Date.class));
-		List<List<Object>> result = flexibleSearchService.<List<Object>>search(fsq).getResult();
+			ProductBadgeModel productBadge = productBadgeDao.findBadgeForCode(leastModifiedBadge);
+			if(productBadge != null){
+				productBadge.setModifiedtime(new Date());
+				modelService.save(productBadge);
+			}
+		}
 
-		if(CollectionUtils.isNotEmpty(result)){
-			result.forEach(r -> LOG.info("Code: {}, Title: {}, Creation Time: {}", r.get(0), r.get(1), r.get(2)));
+		List<ProductBadgeModel> badgesAfterModification = productBadgeDao.findActiveBadges();
+		if(CollectionUtils.isNotEmpty(badgesAfterModification)){
+			LOG.info("Printing badges after modification");
+			badgesAfterModification.forEach(badge -> {
+				LOG.info("Badge: {}, Status: {}, StartDate: {}, EndDate: {}, ModifiedTime: {}",
+						badge.getCode(), badge.getStatus(), badge.getStartDate(), badge.getEndDate(), badge.getModifiedtime());
+
+			});
 		}
 	}
 
@@ -163,5 +149,9 @@ public class DefaultNttbootcampService implements NttbootcampService
 	public void setFlexibleSearchService(final FlexibleSearchService flexibleSearchService)
 	{
 		this.flexibleSearchService = flexibleSearchService;
+	}
+
+	public void setProductBadgeDao(ProductBadgeDao productBadgeDao) {
+		this.productBadgeDao = productBadgeDao;
 	}
 }
