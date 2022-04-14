@@ -61,6 +61,7 @@ public class DefaultNttbootcampService implements NttbootcampService
 
 		testBadgeSearch();
 
+
 		return media.getURL();
 	}
 
