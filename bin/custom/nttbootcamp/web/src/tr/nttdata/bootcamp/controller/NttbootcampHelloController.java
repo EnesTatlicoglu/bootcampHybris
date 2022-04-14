@@ -26,17 +26,17 @@ public class NttbootcampHelloController
 	@Autowired
 	private NttbootcampService nttbootcampService;
 
-	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String printWelcome(final ModelMap model, @RequestParam String badgeCode)
+	@RequestMapping(value = "/"/*, method = RequestMethod.GET*/)
+	public String printWelcome(final ModelMap model/*, @RequestParam String badgeCode*/)
 	{
 		model.addAttribute("logoUrl", nttbootcampService.getHybrisLogoUrl(PLATFORM_LOGO_CODE));
-		if(StringUtils.isNotEmpty(badgeCode)) {
+		/*if(StringUtils.isNotEmpty(badgeCode)) {
 			productBadgeService.deleteBadgeForCode(badgeCode);
 			productBadgeService.createBadgeForCode(badgeCode);
 			if (productBadgeService.getProductBadge(badgeCode) != null) {
 				productBadgeService.deleteBadgeForCode(badgeCode);
 			}
-		}
+		}*/
 		return "welcome";
 	}
 }
