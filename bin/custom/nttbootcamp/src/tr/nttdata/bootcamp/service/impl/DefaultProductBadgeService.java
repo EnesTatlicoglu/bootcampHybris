@@ -4,13 +4,11 @@ import de.hybris.platform.servicelayer.model.ModelService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import tr.nttdata.bootcamp.dao.ProductBadgeDao;
 import tr.nttdata.bootcamp.enums.BadgeStatus;
 import tr.nttdata.bootcamp.model.ProductBadgeModel;
 import tr.nttdata.bootcamp.service.ProductBadgeService;
 
-@Service(value = "productBadgeService")
 public class DefaultProductBadgeService implements ProductBadgeService {
 
     private static final Logger LOG = LoggerFactory.getLogger(DefaultProductBadgeService.class);

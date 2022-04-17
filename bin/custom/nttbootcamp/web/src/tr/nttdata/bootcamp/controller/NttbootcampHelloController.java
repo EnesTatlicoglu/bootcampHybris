@@ -6,6 +6,7 @@ package tr.nttdata.bootcamp.controller;
 import static tr.nttdata.bootcamp.constants.NttbootcampConstants.PLATFORM_LOGO_CODE;
 
 import de.hybris.platform.servicelayer.dto.converter.Converter;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,20 +19,24 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import org.springframework.web.bind.annotation.RequestParam;
 import tr.nttdata.bootcamp.data.ProductBadgeData;
+import tr.nttdata.bootcamp.data.ProductData;
+import tr.nttdata.bootcamp.facades.ProductBadgeFacade;
+import tr.nttdata.bootcamp.facades.ProductFacade;
 import tr.nttdata.bootcamp.model.ProductBadgeModel;
 import tr.nttdata.bootcamp.service.NttbootcampService;
 import tr.nttdata.bootcamp.service.ProductBadgeService;
+
+import java.util.List;
 
 
 @Controller
 public class NttbootcampHelloController
 {
 	@Autowired
-	@Qualifier("productBadgeConverter")
-	private Converter<ProductBadgeModel, ProductBadgeData> productBadgeConverter;
+	private ProductBadgeFacade productBadgeFacade;
 
 	@Autowired
-	private ProductBadgeService productBadgeService;
+	private ProductFacade productFacade;
 
 	@Autowired
 	private NttbootcampService nttbootcampService;
@@ -43,10 +48,13 @@ public class NttbootcampHelloController
 	{
 		model.addAttribute("logoUrl", nttbootcampService.getHybrisLogoUrl(PLATFORM_LOGO_CODE));
 		if(StringUtils.isNotEmpty(badgeCode)) {
-			productBadgeService.deleteBadgeForCode(badgeCode);
-			ProductBadgeModel productBadgeModel = productBadgeService.createBadgeForCode(badgeCode);
-			ProductBadgeData productBadgeData = productBadgeConverter.convert(productBadgeModel);
+			productBadgeFacade.deleteProductBadge(badgeCode);
+			ProductBadgeData productBadgeData = productBadgeFacade.createProductBadgeForCode(badgeCode);
 			LOG.info("Product Badge Data code: {}", productBadgeData.getCode());
+			List<ProductData> products = productFacade.getProducts();
+			if(CollectionUtils.isNotEmpty(products)){
+				products.forEach(p -> LOG.info("Product {} ({})", p.getName(), p.getCode()));
+			}
 		}
 		return "welcome";
 	}

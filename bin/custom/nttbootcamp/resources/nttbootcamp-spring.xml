@@ -38,6 +38,8 @@
     <alias name="defaultProductBadgeDao" alias="productBadgeDao"/>
     <bean id="defaultProductBadgeDao" class="tr.nttdata.bootcamp.dao.impl.DefaultProductBadgeDao"/>
 
+
+
     <alias name="defaultProductBadgePopulator" alias="productBadgePopulator"/>
     <bean id="defaultProductBadgePopulator" class="tr.nttdata.bootcamp.populators.ProductBadgePopulator">
     </bean>
@@ -77,5 +79,24 @@
         <property name="keyType" value="tr.nttdata.bootcamp.data.ProductOption" />
         <property name="key" value="BADGES" />
         <property name="add" ref="productBadgesPopulator" />
+    </bean>
+
+
+
+    <alias name="defaultProductBadgeService" alias="productBadgeService"/>
+    <bean id="defaultProductBadgeService" class="tr.nttdata.bootcamp.service.impl.DefaultProductBadgeService">
+    </bean>
+
+    <alias name="defaultProductBadgeFacade" alias="productBadgeFacade"/>
+    <bean id="defaultProductBadgeFacade" class="tr.nttdata.bootcamp.facades.impl.DefaultProductBadgeFacade">
+        <property name="productBadgeService" ref="productBadgeService"/>
+        <property name="productBadgeConverter" ref="productBadgeConverter"/>
+    </bean>
+
+    <alias name="defaultProductFacade" alias="productFacade"/>
+    <bean id="defaultProductFacade" class="tr.nttdata.bootcamp.facades.impl.DefaultProductFacade">
+        <property name="catalogVersionService" ref="catalogVersionService"/>
+        <property name="productService" ref="productService"/>
+        <property name="productConfigurablePopulator" ref="productConfigurablePopulator"/>
     </bean>
 </beans>
