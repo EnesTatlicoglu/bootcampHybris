@@ -37,4 +37,45 @@
 
     <alias name="defaultProductBadgeDao" alias="productBadgeDao"/>
     <bean id="defaultProductBadgeDao" class="tr.nttdata.bootcamp.dao.impl.DefaultProductBadgeDao"/>
+
+    <alias name="defaultProductBadgePopulator" alias="productBadgePopulator"/>
+    <bean id="defaultProductBadgePopulator" class="tr.nttdata.bootcamp.populators.ProductBadgePopulator">
+    </bean>
+
+    <alias name="defaultProductBadgeConverter" alias="productBadgeConverter"/>
+    <bean id="defaultProductBadgeConverter" parent="abstractPopulatingConverter">
+        <property name="targetClass" value="tr.nttdata.bootcamp.data.ProductBadgeData"/>
+        <property name="populators">
+            <list>
+                <ref bean="productBadgePopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultProductBasicPopulator" alias="productBasicPopulator"/>
+    <bean id="defaultProductBasicPopulator" class="tr.nttdata.bootcamp.populators.ProductBasicPopulator">
+    </bean>
+
+    <alias name="defaultProductBadgesPopulator" alias="productBadgesPopulator"/>
+    <bean id="defaultProductBadgesPopulator" class="tr.nttdata.bootcamp.populators.ProductBadgesPopulator">
+        <property name="productBadgeConverter" ref="productBadgeConverter"/>
+    </bean>
+
+    <alias name="defaultProductConfigurablePopulator" alias="productConfigurablePopulator"/>
+    <bean id="defaultProductConfigurablePopulator" parent="abstractConfigurablePopulator">
+    </bean>
+
+    <bean class="de.hybris.platform.converters.config.ConfigurablePopulatorModification">
+        <property name="target" ref="productConfigurablePopulator" />
+        <property name="keyType" value="tr.nttdata.bootcamp.data.ProductOption" />
+        <property name="key" value="BASIC" />
+        <property name="add" ref="productBasicPopulator" />
+    </bean>
+
+    <bean class="de.hybris.platform.converters.config.ConfigurablePopulatorModification">
+        <property name="target" ref="productConfigurablePopulator" />
+        <property name="keyType" value="tr.nttdata.bootcamp.data.ProductOption" />
+        <property name="key" value="BADGES" />
+        <property name="add" ref="productBadgesPopulator" />
+    </bean>
 </beans>
