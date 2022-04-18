@@ -33,29 +33,11 @@ import java.util.List;
 public class NttbootcampHelloController
 {
 	@Autowired
-	private ProductBadgeFacade productBadgeFacade;
-
-	@Autowired
-	private ProductFacade productFacade;
-
-	@Autowired
 	private NttbootcampService nttbootcampService;
-
-	private static final Logger LOG = LoggerFactory.getLogger(NttbootcampHelloController.class);
-
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String printWelcome(final ModelMap model, @RequestParam String badgeCode)
+	public String printWelcome(final ModelMap model)
 	{
 		model.addAttribute("logoUrl", nttbootcampService.getHybrisLogoUrl(PLATFORM_LOGO_CODE));
-		if(StringUtils.isNotEmpty(badgeCode)) {
-			productBadgeFacade.deleteProductBadge(badgeCode);
-			ProductBadgeData productBadgeData = productBadgeFacade.createProductBadgeForCode(badgeCode);
-			LOG.info("Product Badge Data code: {}", productBadgeData.getCode());
-			List<ProductData> products = productFacade.getProducts();
-			if(CollectionUtils.isNotEmpty(products)){
-				products.forEach(p -> LOG.info("Product {} ({})", p.getName(), p.getCode()));
-			}
-		}
 		return "welcome";
 	}
 }
