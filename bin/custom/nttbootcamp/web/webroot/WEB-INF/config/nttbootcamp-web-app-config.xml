@@ -27,6 +27,7 @@
 				<ref bean="log4jFilter"/>
 				<ref bean="sessionFilter"/>
                 <ref bean="nttbootcampMediaFilter"/>
+                <ref bean="bootcampFilter"/>
 			</list>
 		</constructor-arg>
 	</bean>
@@ -43,10 +44,5 @@
         <!-- <property name="secureMediasResourcePathPrefix" value="__secure__"/> -->
     </bean>
 
-	<!--
-	 WARNING: 
-	 Do NOT override hybris managers or items within the web module!
-	 Use always the core spring configuration file (nttbootcamp-spring.xml) in
-	 the extensions resources/ directory.
-	 -->
+    <bean id="bootcampFilter" class="tr.nttdata.bootcamp.filter.BootcampFilter"/>
 </beans>
