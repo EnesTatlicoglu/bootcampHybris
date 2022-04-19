@@ -4,6 +4,7 @@
 	<enum class="tr.nttdata.bootcamp.data.ProductOption">
 		<value>BASIC</value>
 		<value>BADGES</value>
+		<value>BRAND</value>
 	</enum>
 
 	<bean class="tr.nttdata.bootcamp.data.ProductBadgeData">
@@ -16,10 +17,17 @@
 	<bean class="tr.nttdata.bootcamp.data.ProductData">
 		<property name="code" type="String" equals="true"/>
 		<property name="name" type="String"/>
+		<property name="brand" type="tr.nttdata.bootcamp.data.BrandData"/>
 		<property name="badges" type="java.util.List&lt;tr.nttdata.bootcamp.data.ProductBadgeData>"/>
 	</bean>
 
 	<bean class="de.hybris.platform.test.beans.TestBean">
 		<property name="bootcampProperty" type="String"/>
+	</bean>
+
+	<bean class="tr.nttdata.bootcamp.data.BrandData">
+		<property name="code" type="String" equals="true"/>
+		<property name="name" type="String"/>
+		<property name="logo" type="String"/>
 	</bean>
 </beans>

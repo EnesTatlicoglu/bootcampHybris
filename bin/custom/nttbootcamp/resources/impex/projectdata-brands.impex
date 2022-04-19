@@ -1,0 +1,20 @@
+$mediaFolder = folder(qualifier[default='brands'])
+INSERT_UPDATE CatalogUnawareMedia; code[unique = true]; mime      ; $mediaFolder; realfilename      ; @media[translator = de.hybris.platform.impex.jalo.media.MediaDataTranslator]
+                                 ; NIKE               ; image/png ;             ; Nike-Logo.png     ; jar:/images/Nike-Logo.png
+                                 ; ADIDAS             ; image/png ;             ; Adidas-Logo.png   ; jar:/images/Adidas-Logo.png
+                                 ; SKECHERS           ; image/png ;             ; Skechers-Logo.png ; jar:/images/Skechers-Logo.png
+
+INSERT_UPDATE Brand; code[unique = true]; name     ; logo(code)
+                   ; B001               ; Nike     ; NIKE
+                   ; B002               ; Adidas   ; ADIDAS
+                   ; B003               ; Skechers ; SKECHERS
+
+$lang = en
+$catalogVersion = catalogVersion(catalog(id[default='Default']), version[default='Staged'])[unique=true]
+
+INSERT_UPDATE Product; code[unique = true]; name[lang = $lang]; brand(code); $catalogVersion
+                     ; P0001              ; Test Product      ; B001
+                     ; P0002              ; Express Product   ; B001
+                     ; P0003              ; Sample Product    ; B002
+                     ; P0004              ; Example Product   ; B003
+

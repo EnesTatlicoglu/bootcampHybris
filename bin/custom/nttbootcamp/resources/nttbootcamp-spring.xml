@@ -63,6 +63,12 @@
         <property name="productBadgeConverter" ref="productBadgeConverter"/>
     </bean>
 
+    <alias name="defaultProductBrandPopulator" alias="productBrandPopulator"/>
+    <bean id="defaultProductBrandPopulator" class="tr.nttdata.bootcamp.populators.ProductBrandPopulator">
+        <property name="brandConverter" ref="brandConverter"/>
+    </bean>
+
+
     <alias name="defaultProductConfigurablePopulator" alias="productConfigurablePopulator"/>
     <bean id="defaultProductConfigurablePopulator" parent="abstractConfigurablePopulator">
     </bean>
@@ -81,6 +87,12 @@
         <property name="add" ref="productBadgesPopulator" />
     </bean>
 
+    <bean class="de.hybris.platform.converters.config.ConfigurablePopulatorModification">
+        <property name="target" ref="productConfigurablePopulator" />
+        <property name="keyType" value="tr.nttdata.bootcamp.data.ProductOption" />
+        <property name="key" value="BRAND" />
+        <property name="add" ref="productBrandPopulator" />
+    </bean>
 
 
     <alias name="defaultProductBadgeService" alias="productBadgeService"/>
@@ -97,6 +109,36 @@
     <bean id="defaultProductFacade" class="tr.nttdata.bootcamp.facades.impl.DefaultProductFacade">
         <property name="catalogVersionService" ref="catalogVersionService"/>
         <property name="productService" ref="productService"/>
+        <property name="brandService" ref="brandService"/>
         <property name="productConfigurablePopulator" ref="productConfigurablePopulator"/>
     </bean>
+
+    <alias name="defaultBrandDao" alias="brandDao"/>
+    <bean id="defaultBrandDao" class="tr.nttdata.bootcamp.dao.impl.DefaultBrandDao"/>
+    
+    <alias name="defaultBrandService" alias="brandService"/>
+    <bean id="defaultBrandService" class="tr.nttdata.bootcamp.service.impl.DefaultBrandService">
+        <property name="brandDao" ref="brandDao"/>
+    </bean>
+
+    <alias name="defaultBrandFacade" alias="brandFacade"/>
+    <bean id="defaultBrandFacade" class="tr.nttdata.bootcamp.facades.impl.DefaultBrandFacade">
+        <property name="brandService" ref="brandService"/>
+        <property name="brandConverter" ref="brandConverter"/>
+    </bean>
+
+    <alias name="defaultBrandPopulator" alias="brandPopulator"/>
+    <bean id="defaultBrandPopulator" class="tr.nttdata.bootcamp.populators.BrandPopulator">
+    </bean>
+
+    <alias name="defaultBrandConverter" alias="brandConverter"/>
+    <bean id="defaultBrandConverter" parent="abstractPopulatingConverter">
+        <property name="targetClass" value="tr.nttdata.bootcamp.data.BrandData"/>
+        <property name="populators">
+            <list>
+                <ref bean="brandPopulator"/>
+            </list>
+        </property>
+    </bean>
+
 </beans>

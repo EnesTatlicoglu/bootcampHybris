@@ -9,5 +9,5 @@ public interface ProductFacade {
     List<ProductData> getProducts();
 
     ProductData getProductForCode(String code);
-
+    List<ProductData> getProductsForBrand(String code);
 }

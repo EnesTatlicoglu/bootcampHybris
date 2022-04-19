@@ -4,6 +4,12 @@
   <title>Product Details for ${product.code}</title>
   <body>
     <h1>${product.name} (${product.code})</h1>
+    <c:if test="${not empty product.brand}">
+        <h2><a href="<c:url value="/brands/${product.brand.code}" />">${product.brand.name}</a></h2>
+        <c:if test="${not empty product.brand.logo}">
+            <img src="${product.brand.logo}" style="height:3rem;"/>
+        </c:if>
+    </c:if >
     <c:if test="${not empty product.badges}">
       <ul>
         <c:forEach var="badge" items="${product.badges}">

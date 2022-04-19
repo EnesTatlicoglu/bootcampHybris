@@ -10,6 +10,7 @@ import org.springframework.util.CollectionUtils;
 import tr.nttdata.bootcamp.data.ProductData;
 import tr.nttdata.bootcamp.data.ProductOption;
 import tr.nttdata.bootcamp.facades.ProductFacade;
+import tr.nttdata.bootcamp.service.BrandService;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,6 +19,7 @@ import java.util.List;
 
 public class DefaultProductFacade implements ProductFacade {
 
+    private BrandService brandService;
     private CatalogVersionService catalogVersionService;
     private ProductService productService;
     private ConfigurablePopulator<ProductModel, ProductData, ProductOption> productConfigurablePopulator;
@@ -53,6 +55,25 @@ public class DefaultProductFacade implements ProductFacade {
         return productData;
     }
 
+    @Override
+    public List<ProductData> getProductsForBrand(String code) {
+        final String catalogId = Config.getString("bootcamp.catalog.id", "Default");
+        final String catalogVersion = Config.getString("bootcamp.catalog.version", "Staged");
+        CatalogVersionModel catalogVersionModel = getCatalogVersionService().getCatalogVersion(catalogId, catalogVersion);
+        getCatalogVersionService().setSessionCatalogVersion(catalogId, catalogVersion);
+        List<ProductModel> products = getBrandService().getProductsForBrand(code);
+        if(CollectionUtils.isEmpty(products)){
+            return Collections.emptyList();
+        }
+        final List<ProductData> productDataList = new ArrayList<>(products.size());
+        products.forEach(productModel -> {
+            final ProductData productData = new ProductData();
+            getProductConfigurablePopulator().populate(productModel, productData, Collections.singletonList(ProductOption.BASIC));
+            productDataList.add(productData);
+        });
+        return productDataList;
+    }
+
     public CatalogVersionService getCatalogVersionService() {
         return catalogVersionService;
     }
@@ -75,5 +96,13 @@ public class DefaultProductFacade implements ProductFacade {
 
     public void setProductConfigurablePopulator(ConfigurablePopulator<ProductModel, ProductData, ProductOption> productConfigurablePopulator) {
         this.productConfigurablePopulator = productConfigurablePopulator;
+    }
+
+    public BrandService getBrandService() {
+        return brandService;
+    }
+
+    public void setBrandService(BrandService brandService) {
+        this.brandService = brandService;
     }
 }
