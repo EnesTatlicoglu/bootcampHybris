@@ -141,4 +141,44 @@
         </property>
     </bean>
 
+    <bean id="productBadgeInitDefaultsInterceptor"
+          class="tr.nttdata.bootcamp.interceptors.ProductBadgeInitDefaultsInterceptor"/>
+    <bean id="productBadgeInitDefaultsInterceptorMapping"
+          class="de.hybris.platform.servicelayer.interceptor.impl.InterceptorMapping">
+        <property name="interceptor" ref="productBadgeInitDefaultsInterceptor"/>
+        <property name="typeCode" value="ProductBadge"/>
+    </bean>
+
+    <bean id="productBadgeLoadInterceptor"
+          class="tr.nttdata.bootcamp.interceptors.ProductBadgeLoadInterceptor"/>
+    <bean id="productBadgeLoadInterceptorMapping"
+          class="de.hybris.platform.servicelayer.interceptor.impl.InterceptorMapping">
+        <property name="interceptor" ref="productBadgeLoadInterceptor"/>
+        <property name="typeCode" value="ProductBadge"/>
+    </bean>
+
+    <bean id="productBadgePrepareInterceptor"
+          class="tr.nttdata.bootcamp.interceptors.ProductBadgePrepareInterceptor"/>
+    <bean id="productBadgePrepareInterceptorMapping"
+          class="de.hybris.platform.servicelayer.interceptor.impl.InterceptorMapping">
+        <property name="interceptor" ref="productBadgePrepareInterceptor"/>
+        <property name="typeCode" value="ProductBadge"/>
+    </bean>
+
+    <bean id="productBadgeValidateInterceptor"
+          class="tr.nttdata.bootcamp.interceptors.ProductBadgeValidateInterceptor"/>
+    <bean id="productBadgeValidateInterceptorMapping"
+          class="de.hybris.platform.servicelayer.interceptor.impl.InterceptorMapping">
+        <property name="interceptor" ref="productBadgeValidateInterceptor"/>
+        <property name="typeCode" value="ProductBadge"/>
+    </bean>
+
+    <bean id="productBadgeRemoveInterceptor"
+          class="tr.nttdata.bootcamp.interceptors.ProductBadgeRemoveInterceptor"/>
+    <bean id="productBadgeRemoveInterceptorMapping"
+          class="de.hybris.platform.servicelayer.interceptor.impl.InterceptorMapping">
+        <property name="interceptor" ref="productBadgeRemoveInterceptor"/>
+        <property name="typeCode" value="ProductBadge"/>
+    </bean>
+
 </beans>
