@@ -6,6 +6,9 @@ import de.hybris.platform.converters.ConfigurablePopulator;
 import de.hybris.platform.core.model.product.ProductModel;
 import de.hybris.platform.product.ProductService;
 import de.hybris.platform.util.Config;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.util.CollectionUtils;
 import tr.nttdata.bootcamp.data.ProductData;
 import tr.nttdata.bootcamp.data.ProductOption;
@@ -24,7 +27,10 @@ public class DefaultProductFacade implements ProductFacade {
     private ProductService productService;
     private ConfigurablePopulator<ProductModel, ProductData, ProductOption> productConfigurablePopulator;
 
+    private static final Logger LOG = LoggerFactory.getLogger(DefaultProductFacade.class);
+
     @Override
+    @Cacheable(value = "productCache")
     public List<ProductData> getProducts() {
         final String catalogId = Config.getString("bootcamp.catalog.id", "Default");
         final String catalogVersion = Config.getString("bootcamp.catalog.version", "Staged");
@@ -40,10 +46,14 @@ public class DefaultProductFacade implements ProductFacade {
             getProductConfigurablePopulator().populate(productModel, productData, Collections.singletonList(ProductOption.BASIC));
             productDataList.add(productData);
         });
+
+        LOG.info("Called getProducts() method");
+
         return productDataList;
     }
 
     @Override
+    @Cacheable(value = "productDetailCache", key = "#code")
     public ProductData getProductForCode(String code) {
         final String catalogId = Config.getString("bootcamp.catalog.id", "Default");
         final String catalogVersion = Config.getString("bootcamp.catalog.version", "Staged");
@@ -52,6 +62,9 @@ public class DefaultProductFacade implements ProductFacade {
         final ProductModel productModel = getProductService().getProductForCode(catalogVersionModel, code);
         final ProductData productData = new ProductData();
         getProductConfigurablePopulator().populate(productModel, productData, Arrays.asList(ProductOption.values()));
+
+        LOG.info("Called getProductForCode() method with code {}", code);
+
         return productData;
     }
 

@@ -3,13 +3,30 @@
  Copyright (c) 2021 SAP SE or an SAP affiliate company. All rights reserved.
 -->
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:aop="http://www.springframework.org/schema/aop"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:cache="http://www.springframework.org/schema/cache"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
            http://www.springframework.org/schema/beans/spring-beans.xsd
            http://www.springframework.org/schema/aop
-           http://www.springframework.org/schema/aop/spring-aop.xsd">
-	
+           http://www.springframework.org/schema/aop/spring-aop.xsd
+           http://www.springframework.org/schema/cache
+           http://www.springframework.org/schema/cache/spring-cache.xsd">
+
+    <cache:annotation-driven/>
+
+    <bean id="cacheManager" class="org.springframework.cache.support.SimpleCacheManager">
+        <property name="caches">
+            <set>
+                <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean"
+                      name="productCache"/>
+                <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean"
+                      name="productDetailCache"/>
+            </set>
+        </property>
+    </bean>
+
+
     <bean id="nttbootcampSystemSetup" class="tr.nttdata.bootcamp.setup.NttbootcampSystemSetup">
         <!-- constructor arg injection example -->
         <constructor-arg ref="nttbootcampService"/>
@@ -28,16 +45,17 @@
           class="tr.nttdata.bootcamp.service.impl.NttUserService">
     </bean>
 
-    <bean id="productBadgeVisibleAttributeHandler" class="tr.nttdata.bootcamp.attributehandler.ProductBadgeVisibleAttributeHandler"/>
-    <bean id="Product_badgeCountAttributeHandler" class="tr.nttdata.bootcamp.attributehandler.ProductBadgeCountAttributeHandler"/>
+    <bean id="productBadgeVisibleAttributeHandler"
+          class="tr.nttdata.bootcamp.attributehandler.ProductBadgeVisibleAttributeHandler"/>
+    <bean id="Product_badgeCountAttributeHandler"
+          class="tr.nttdata.bootcamp.attributehandler.ProductBadgeCountAttributeHandler"/>
 
-    <bean id="bootcampSystemSetup" class="tr.nttdata.bootcamp.setup.BootcampSystemSetup" >
+    <bean id="bootcampSystemSetup" class="tr.nttdata.bootcamp.setup.BootcampSystemSetup">
         <constructor-arg ref="importService"/>
     </bean>
 
     <alias name="defaultProductBadgeDao" alias="productBadgeDao"/>
     <bean id="defaultProductBadgeDao" class="tr.nttdata.bootcamp.dao.impl.DefaultProductBadgeDao"/>
-
 
 
     <alias name="defaultProductBadgePopulator" alias="productBadgePopulator"/>
@@ -74,24 +92,24 @@
     </bean>
 
     <bean class="de.hybris.platform.converters.config.ConfigurablePopulatorModification">
-        <property name="target" ref="productConfigurablePopulator" />
-        <property name="keyType" value="tr.nttdata.bootcamp.data.ProductOption" />
-        <property name="key" value="BASIC" />
-        <property name="add" ref="productBasicPopulator" />
+        <property name="target" ref="productConfigurablePopulator"/>
+        <property name="keyType" value="tr.nttdata.bootcamp.data.ProductOption"/>
+        <property name="key" value="BASIC"/>
+        <property name="add" ref="productBasicPopulator"/>
     </bean>
 
     <bean class="de.hybris.platform.converters.config.ConfigurablePopulatorModification">
-        <property name="target" ref="productConfigurablePopulator" />
-        <property name="keyType" value="tr.nttdata.bootcamp.data.ProductOption" />
-        <property name="key" value="BADGES" />
-        <property name="add" ref="productBadgesPopulator" />
+        <property name="target" ref="productConfigurablePopulator"/>
+        <property name="keyType" value="tr.nttdata.bootcamp.data.ProductOption"/>
+        <property name="key" value="BADGES"/>
+        <property name="add" ref="productBadgesPopulator"/>
     </bean>
 
     <bean class="de.hybris.platform.converters.config.ConfigurablePopulatorModification">
-        <property name="target" ref="productConfigurablePopulator" />
-        <property name="keyType" value="tr.nttdata.bootcamp.data.ProductOption" />
-        <property name="key" value="BRAND" />
-        <property name="add" ref="productBrandPopulator" />
+        <property name="target" ref="productConfigurablePopulator"/>
+        <property name="keyType" value="tr.nttdata.bootcamp.data.ProductOption"/>
+        <property name="key" value="BRAND"/>
+        <property name="add" ref="productBrandPopulator"/>
     </bean>
 
 
@@ -117,7 +135,7 @@
 
     <alias name="defaultBrandDao" alias="brandDao"/>
     <bean id="defaultBrandDao" class="tr.nttdata.bootcamp.dao.impl.DefaultBrandDao"/>
-    
+
     <alias name="defaultBrandService" alias="brandService"/>
     <bean id="defaultBrandService" class="tr.nttdata.bootcamp.service.impl.DefaultBrandService">
         <property name="brandDao" ref="brandDao"/>
