@@ -93,7 +93,7 @@
 				</attribute>
 				<attribute qualifier="status" type="BadgeStatus">
 					<modifiers optional="false"/>
-					<defaultvalue>em().getEnumerationValue("BadgeStatus", "PASSIVE")</defaultvalue>
+						<defaultvalue>em().getEnumerationValue("BadgeStatus", "PASSIVE")</defaultvalue>
 					<persistence type="property"/>
 				</attribute>
 				<attribute qualifier="group" type="BadgeGroup">

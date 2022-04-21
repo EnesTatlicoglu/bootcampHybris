@@ -103,6 +103,8 @@
     <bean id="defaultProductBadgeFacade" class="tr.nttdata.bootcamp.facades.impl.DefaultProductBadgeFacade">
         <property name="productBadgeService" ref="productBadgeService"/>
         <property name="productBadgeConverter" ref="productBadgeConverter"/>
+        <property name="productBadgeCacheRegion" ref="productBadgeCacheRegion"/>
+        <property name="productBadgeCacheValueLoader" ref="productBadgeCacheValueLoader"/>
     </bean>
 
     <alias name="defaultProductFacade" alias="productFacade"/>
@@ -179,6 +181,11 @@
           class="de.hybris.platform.servicelayer.interceptor.impl.InterceptorMapping">
         <property name="interceptor" ref="productBadgeRemoveInterceptor"/>
         <property name="typeCode" value="ProductBadge"/>
+    </bean>
+
+    <alias name="defaultProductBadgeCacheValueLoader" alias="productBadgeCacheValueLoader"/>
+    <bean id="defaultProductBadgeCacheValueLoader" class="tr.nttdata.bootcamp.cache.ProductBadgeCacheValueLoader">
+        <property name="productBadgeService" ref="productBadgeService"/>
     </bean>
 
 </beans>
