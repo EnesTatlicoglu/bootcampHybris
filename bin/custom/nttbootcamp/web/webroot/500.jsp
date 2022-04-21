@@ -6,7 +6,7 @@
 </head>
 <body>
 <div class="container">
-    <h1>404 Server Runtime Exception</h1>
+    <h1>500 Server Runtime Exception</h1>
 </div>
 </body>
 </html>
