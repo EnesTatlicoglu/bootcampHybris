@@ -124,5 +124,20 @@
 				</attribute>
 			</attributes>
 		</itemtype>
+		<itemtype code="ValidUrlConstraint" extends="AttributeConstraint"
+				  autocreate="true" generate="true">
+			<attributes>
+				<attribute qualifier="annotation" type="java.lang.Class"
+						   redeclare="true">
+					<modifiers write="false" initial="true" optional="false" />
+					<defaultvalue>
+						tr.nttdata.bootcamp.constraints.ValidUrlConstraint.class
+					</defaultvalue>
+				</attribute>
+				<attribute qualifier="validProtocol" type="java.lang.String">
+					<persistence type="property"/>
+				</attribute>
+			</attributes>
+		</itemtype>
 	</itemtypes>
 </items>
