@@ -71,7 +71,7 @@
 				</attribute>
 				<attribute qualifier="code" type="java.lang.String">
 					<description>Unique code of the badge</description>
-					<modifiers unique="true"/>
+					<modifiers optional="false" unique="true"/>
 					<persistence type="property" />
 				</attribute>
 				<attribute qualifier="logo" type="java.lang.String">

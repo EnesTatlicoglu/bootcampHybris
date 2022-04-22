@@ -161,6 +161,8 @@
         </property>
     </bean>
 
+    <!--
+
     <bean id="productBadgeInitDefaultsInterceptor"
           class="tr.nttdata.bootcamp.interceptors.ProductBadgeInitDefaultsInterceptor"/>
     <bean id="productBadgeInitDefaultsInterceptorMapping"
@@ -168,6 +170,8 @@
         <property name="interceptor" ref="productBadgeInitDefaultsInterceptor"/>
         <property name="typeCode" value="ProductBadge"/>
     </bean>
+
+    -->
 
     <bean id="productBadgeLoadInterceptor"
           class="tr.nttdata.bootcamp.interceptors.ProductBadgeLoadInterceptor"/>
