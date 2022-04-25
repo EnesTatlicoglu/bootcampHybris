@@ -83,6 +83,9 @@
 						</columntype>
 					</persistence>
 				</attribute>
+				<attribute qualifier="logoMedia" type="Media">
+					<persistence type="property"/>
+				</attribute>
 				<attribute qualifier="startDate" type="java.util.Date">
 					<description>Start date</description>
 					<persistence type="property" />

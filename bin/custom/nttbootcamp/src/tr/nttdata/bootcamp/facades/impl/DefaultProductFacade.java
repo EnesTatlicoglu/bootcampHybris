@@ -30,7 +30,6 @@ public class DefaultProductFacade implements ProductFacade {
     private static final Logger LOG = LoggerFactory.getLogger(DefaultProductFacade.class);
 
     @Override
-    @Cacheable(value = "productCache")
     public List<ProductData> getProducts() {
         final String catalogId = Config.getString("bootcamp.catalog.id", "Default");
         final String catalogVersion = Config.getString("bootcamp.catalog.version", "Staged");
@@ -53,7 +52,6 @@ public class DefaultProductFacade implements ProductFacade {
     }
 
     @Override
-    @Cacheable(value = "productDetailCache", key = "#code")
     public ProductData getProductForCode(String code) {
         final String catalogId = Config.getString("bootcamp.catalog.id", "Default");
         final String catalogVersion = Config.getString("bootcamp.catalog.version", "Staged");
