@@ -210,4 +210,8 @@
         <property name="productBadgeService" ref="productBadgeService"/>
     </bean>
 
+    <bean id="productBadgeEventListener" class="tr.nttdata.bootcamp.listeners.ProductBadgeEventListener" parent="abstractEventListener">
+        <property name="modelService" ref="modelService" />
+    </bean>
+
 </beans>
