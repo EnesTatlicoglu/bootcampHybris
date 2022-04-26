@@ -40,10 +40,16 @@ public class ProductBadgePrepareInterceptor implements PrepareInterceptor<Produc
 
         final boolean isNew = ctx.isNew(model);
         final boolean activated = !isNew && !BadgeStatus.ACTIVE.equals(model.getItemModelContext().getOriginalValue(ProductBadgeModel.STATUS));
+
+        LOG.info("Publishing event for {}", model.getCode());
+
         if(isNew || activated){
             eventService.publishEvent(new ProductBadgeActivatedEvent(model.getCode(),
                     isNew ? null : model.getPk().getLong(), userService.getCurrentUser().getUid()));
         }
+
+        LOG.info("Published event for {}", model.getCode());
+
     }
 
     public EventService getEventService() {

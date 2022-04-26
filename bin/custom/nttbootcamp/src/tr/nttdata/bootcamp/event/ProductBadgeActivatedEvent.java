@@ -1,8 +1,10 @@
 package tr.nttdata.bootcamp.event;
 
+import de.hybris.platform.servicelayer.event.ClusterAwareEvent;
+import de.hybris.platform.servicelayer.event.PublishEventContext;
 import de.hybris.platform.servicelayer.event.events.AbstractEvent;
 
-public class ProductBadgeActivatedEvent extends AbstractEvent {
+public class ProductBadgeActivatedEvent extends AbstractEvent implements ClusterAwareEvent {
 
     private final String code;
     private final Long pk;
@@ -13,6 +15,11 @@ public class ProductBadgeActivatedEvent extends AbstractEvent {
         this.code = code;
         this.pk = pk;
         this.userId = userId;
+    }
+
+    @Override
+    public boolean canPublish(PublishEventContext publishEventContext) {
+        return publishEventContext.getSourceNodeId() == publishEventContext.getTargetNodeId();
     }
 
     public String getCode() {
