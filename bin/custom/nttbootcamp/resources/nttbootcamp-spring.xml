@@ -214,11 +214,16 @@
         <property name="productBadgeService" ref="productBadgeService"/>
     </bean>
 
+    <!--
     <bean id="productBadgeEventListener" class="tr.nttdata.bootcamp.listeners.ProductBadgeEventListener" parent="abstractEventListener">
         <property name="modelService" ref="modelService" />
     </bean>
+    !-->
 
     <bean id="productBadgeActivatedEventListener" class="tr.nttdata.bootcamp.listeners.ProductBadgeActivatedEventListener" parent="abstractEventListener">
+    </bean>
+
+    <bean id="productBadgeAfterSaveEventListener" class="tr.nttdata.bootcamp.listeners.ProductBadgeAfterSaveEventListener">
     </bean>
 
 </beans>
