@@ -2,9 +2,10 @@ package tr.nttdata.bootcamp.event;
 
 import de.hybris.platform.servicelayer.event.ClusterAwareEvent;
 import de.hybris.platform.servicelayer.event.PublishEventContext;
+import de.hybris.platform.servicelayer.event.TransactionAwareEvent;
 import de.hybris.platform.servicelayer.event.events.AbstractEvent;
 
-public class ProductBadgeActivatedEvent extends AbstractEvent implements ClusterAwareEvent {
+public class ProductBadgeActivatedEvent extends AbstractEvent implements ClusterAwareEvent, TransactionAwareEvent {
 
     private final String code;
     private final Long pk;
@@ -41,5 +42,15 @@ public class ProductBadgeActivatedEvent extends AbstractEvent implements Cluster
                 ", pk=" + pk +
                 ", userId='" + userId + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean publishOnCommitOnly() {
+        return true;
+    }
+
+    @Override
+    public Object getId() {
+        return getCode();
     }
 }
