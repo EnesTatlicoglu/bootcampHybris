@@ -15,7 +15,7 @@ public class ProductBadgeInitDefaultsInterceptor implements InitDefaultsIntercep
 
     @Override
     public void onInitDefaults(ProductBadgeModel model, InterceptorContext ctx) throws InterceptorException {
-        LOG.info("Entered InitDefaultsInterceptor for PK: {}, isNew: {}", model.getPk(), ctx.isNew(model));
+        LOG.debug("Entered InitDefaultsInterceptor for PK: {}, isNew: {}", model.getPk(), ctx.isNew(model));
         model.setCode(UUID.randomUUID().toString());
     }
 

@@ -182,7 +182,11 @@
     </bean>
 
     <bean id="productBadgePrepareInterceptor"
-          class="tr.nttdata.bootcamp.interceptors.ProductBadgePrepareInterceptor"/>
+          class="tr.nttdata.bootcamp.interceptors.ProductBadgePrepareInterceptor">
+        <property name="eventService" ref="eventService"/>
+        <property name="userService" ref="userService"/>
+    </bean>
+
     <bean id="productBadgePrepareInterceptorMapping"
           class="de.hybris.platform.servicelayer.interceptor.impl.InterceptorMapping">
         <property name="interceptor" ref="productBadgePrepareInterceptor"/>
@@ -212,6 +216,9 @@
 
     <bean id="productBadgeEventListener" class="tr.nttdata.bootcamp.listeners.ProductBadgeEventListener" parent="abstractEventListener">
         <property name="modelService" ref="modelService" />
+    </bean>
+
+    <bean id="productBadgeActivatedEventListener" class="tr.nttdata.bootcamp.listeners.ProductBadgeActivatedEventListener" parent="abstractEventListener">
     </bean>
 
 </beans>

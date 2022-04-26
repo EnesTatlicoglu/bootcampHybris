@@ -14,7 +14,7 @@ public class ProductBadgeLoadInterceptor implements LoadInterceptor<ProductBadge
 
     @Override
     public void onLoad(ProductBadgeModel model, InterceptorContext ctx) throws InterceptorException {
-        LOG.info("Entered LoadInterceptor for PK: {}, isNew: {}", model.getPk(), ctx.isNew(model));
+        LOG.debug("Entered LoadInterceptor for PK: {}, isNew: {}", model.getPk(), ctx.isNew(model));
         if(StringUtils.isEmpty(model.getLogo())){
             model.setLogo("https://enter-logo-url/here.png");
         }

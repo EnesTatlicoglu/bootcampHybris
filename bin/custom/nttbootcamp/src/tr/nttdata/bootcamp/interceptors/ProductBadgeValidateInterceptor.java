@@ -13,7 +13,7 @@ public class ProductBadgeValidateInterceptor implements ValidateInterceptor<Prod
 
     @Override
     public void onValidate(ProductBadgeModel model, InterceptorContext ctx) throws InterceptorException {
-        LOG.info("Entered ValidateInterceptor for PK: {}, isNew: {}", model.getPk(), ctx.isNew(model));
+        LOG.debug("Entered ValidateInterceptor for PK: {}, isNew: {}", model.getPk(), ctx.isNew(model));
         if(model.getEndDate() != null
                 && model.getStartDate() != null
                 && model.getEndDate().before(model.getStartDate())){

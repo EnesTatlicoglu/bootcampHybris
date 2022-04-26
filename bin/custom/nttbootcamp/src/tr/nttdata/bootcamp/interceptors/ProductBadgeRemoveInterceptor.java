@@ -18,7 +18,7 @@ public class ProductBadgeRemoveInterceptor implements RemoveInterceptor<ProductB
 
     @Override
     public void onRemove(ProductBadgeModel model, InterceptorContext ctx) throws InterceptorException {
-        LOG.info("Entered RemoveInterceptor for PK: {}, isNew: {}", model.getPk(), ctx.isNew(model));
+        LOG.debug("Entered RemoveInterceptor for PK: {}, isNew: {}", model.getPk(), ctx.isNew(model));
         LOG.info("Removing badge with PK: {} and code: {} by user {}", model.getPk(), model.getCode(), userService.getCurrentUser().getUid());
 
 
