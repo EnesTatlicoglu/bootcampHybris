@@ -226,4 +226,8 @@
     <bean id="productBadgeAfterSaveEventListener" class="tr.nttdata.bootcamp.listeners.ProductBadgeAfterSaveEventListener">
     </bean>
 
+    <bean id="checkActiveBadgesJob" class="tr.nttdata.bootcamp.job.CheckActiveBadgesJob" parent="abstractJobPerformable">
+        <property name="productBadgeDao" ref="productBadgeDao"/>
+    </bean>
+
 </beans>
