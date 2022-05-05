@@ -127,6 +127,7 @@
 				</attribute>
 			</attributes>
 		</itemtype>
+
 		<itemtype code="ValidUrlConstraint" extends="AttributeConstraint"
 				  autocreate="true" generate="true">
 			<attributes>
