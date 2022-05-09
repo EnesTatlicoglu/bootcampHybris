@@ -10,7 +10,17 @@
 		http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd">
 		
-	<context:annotation-config/> 
+	<context:annotation-config/>
+
+	<!-- Search Result Product Populator -->
+	<bean id="nttSearchResultProductPopulator" parent="defaultCommerceSearchResultProductPopulator"
+		  class="tr.nttdata.bootcamp.facades.populators.NttSearchResultProductPopulator">
+	</bean>
+
+	<bean parent="modifyPopulatorList">
+		<property name="list" ref="commerceSearchResultProductConverter"/>
+		<property name="add" ref="nttSearchResultProductPopulator"/>
+	</bean>
 
 	<!-- PRODUCT BADGE POPULATOR -->
 	<alias name="defaultProductBadgePopulator" alias="productBadgePopulator"/>

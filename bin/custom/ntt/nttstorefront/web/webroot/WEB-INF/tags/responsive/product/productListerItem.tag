@@ -46,6 +46,10 @@
 			<div class="product__listing--description">${ycommerce:sanitizeHTML(product.summary)}</div>
 		</c:if>
 
+		<c:if test="${not empty product.numberOfReviews and product.numberOfReviews > 0}">
+            <product:productReviewStars product="${product}"/>
+        </c:if>
+
 
 
 		<c:set var="product" value="${product}" scope="request"/>
