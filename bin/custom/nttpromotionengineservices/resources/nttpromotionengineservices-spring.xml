@@ -20,4 +20,30 @@
 	<alias name="defaultRuleCustomerFirstOrderTranslator" alias="ruleCustomerFirstOrderTranslator"/>
 	<bean id="defaultRuleCustomerFirstOrderTranslator" parent="abstractRuleConditionTranslator"
 		  class="tr.nttdata.bootcamp.promotionengineservices.conditions.RuleCustomerFirstOrderTranslator"/>
+
+	<alias alias="addUserToUserGroupRAOAction" name="defaultAddUserToUserGroupRAOAction" />
+	<bean id="defaultAddUserToUserGroupRAOAction" parent="abstractRuleExecutableSupport"
+		  class="tr.nttdata.bootcamp.promotionengineservices.rule.evaluation.actions.impl.AddUserToUserGroupRAOAction"/>
+
+	<alias alias="addUserToUserGroupAction" name="defaultAddUserToUserGroupAction" />
+	<bean id="defaultAddUserToUserGroupAction"
+		  class="de.hybris.platform.ruledefinitions.actions.DefaultRuleExecutableAction">
+		<property name="raoAction" ref="addUserToUserGroupRAOAction"/>
+	</bean>
+
+	<alias name="defaultAddUserToUserGroupActionStrategy" alias="addUserToUserGroupActionStrategy"/>
+	<bean id="defaultAddUserToUserGroupActionStrategy" parent="abstractRuleActionStrategy"
+		  class="tr.nttdata.bootcamp.promotionengineservices.action.DefaultAddUserToUserGroupActionStrategy" >
+		<property name="promotionAction" value="tr.nttdata.bootcamp.promotionengineservices.model.RuleBasedAddUserToUserGroupActionModel"/>
+		<property name="userService" ref="userService" />
+	</bean>
+
+	<bean id="defaultAddUserToUserGroupActionStrategyListMergeDirective" depends-on="actionStrategies" parent="listMergeDirective">
+		<property name="add" ref="defaultAddUserToUserGroupActionStrategy" />
+	</bean>
+
+	<bean id="defaultAddUserToUserGroupActionStrategyMapMergeDirective" depends-on="promotionActionStrategiesMapping" parent="mapMergeDirective">
+		<property name="key" value="defaultAddUserToUserGroupRAOAction" />
+		<property name="value" ref="defaultAddUserToUserGroupActionStrategy" />
+	</bean>
 </beans>

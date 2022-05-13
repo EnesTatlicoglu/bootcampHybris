@@ -15,4 +15,8 @@
         <property name="hasOrder" type="boolean"/>
     </bean>
 
+    <bean class="de.hybris.platform.ruleengineservices.rao.ChangeUserGroupRAO" extends="de.hybris.platform.ruleengineservices.rao.AbstractRuleActionRAO">
+        <property name="userGroupId" type="String" />
+    </bean>
+
 </beans>

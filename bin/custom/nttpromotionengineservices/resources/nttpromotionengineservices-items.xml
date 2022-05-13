@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+ Copyright (c) 2019 SAP SE or an SAP affiliate company. All rights reserved.
+-->
+<items xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="items.xsd">
+    <itemtypes>
+        <itemtype code="RuleBasedAddUserToUserGroupAction"
+                  extends="AbstractRuleBasedPromotionAction"
+                  jaloclass="tr.nttdata.bootcamp.promotionengineservices.jalo.RuleBasedAddUserToUserGroupAction"
+                  autocreate="true"
+                  generate="true">
+            <attributes>
+                <attribute
+                        qualifier="userGroup"
+                        autocreate="true"
+                        type="UserGroup">
+                    <persistence type="property" />
+                </attribute>
+                <attribute
+                        qualifier="user"
+                        autocreate="true"
+                        type="User">
+                    <persistence type="property" />
+                </attribute>
+            </attributes>
+        </itemtype>
+    </itemtypes>
+</items>
