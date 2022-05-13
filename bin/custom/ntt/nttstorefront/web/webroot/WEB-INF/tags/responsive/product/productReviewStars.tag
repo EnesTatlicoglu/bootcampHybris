@@ -20,7 +20,7 @@
 		</div>
 		<div class="greenStars js-greenStars">
 			<c:forEach  begin="1" end="5">
-				<span class="glyphicon glyphicon-star active"></span>
+                <span class="glyphicon glyphicon-star active"></span>
 			</c:forEach>
 		</div>
 	</div>

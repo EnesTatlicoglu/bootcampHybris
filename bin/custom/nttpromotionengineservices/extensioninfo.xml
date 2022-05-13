@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+ Copyright (c) 2021 SAP SE or an SAP affiliate company. All rights reserved.
+--><extensioninfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="extensioninfo.xsd">
+           
+    
+    <extension abstractclassprefix="Generated" classprefix="Nttpromotionengineservices" jaloLogicFree="true" managername="NttpromotionengineservicesManager" managersuperclass="de.hybris.platform.jalo.extension.Extension" name="nttpromotionengineservices" usemaven="false">
+
+        <requires-extension name="promotionengineservices" />
+        <requires-extension name="nttcore" />
+      
+        
+        <coremodule generated="true" manager="tr.nttdata.bootcamp.promotionengineservices.jalo.NttpromotionengineservicesManager" packageroot="tr.nttdata.bootcamp.promotionengineservices"/>
+                	
+        
+           
+    
+    </extension>
+        
+
+</extensioninfo>

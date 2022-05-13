@@ -1,0 +1,7 @@
+$lang = en
+
+INSERT_UPDATE RuleConditionDefinition; id[unique = true]    ; name[lang = $lang]; priority; breadcrumb[lang = $lang]; allowsChildren; translatorId                     ; translatorParameters; categories(id)
+                                     ; customer_first_order ; First Order       ; 200     ; Customer's first order  ; false         ; ruleCustomerFirstOrderTranslator ;                     ; customer
+
+INSERT_UPDATE RuleConditionDefinitionRuleTypeMapping; definition(id)[unique = true]; ruleType(code)[default = PromotionSourceRule][unique = true]
+                                                    ; customer_first_order
