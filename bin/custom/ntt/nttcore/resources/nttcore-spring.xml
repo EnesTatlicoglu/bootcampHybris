@@ -18,6 +18,16 @@
 	<import resource="classpath:/nttcore/integration/hot-folder-store-apparel-spring.xml"/>
 	<import resource="classpath:/nttcore/integration/hot-folder-common-spring.xml"/>
 
+	<alias name="defaultAddToCartHistoryCommerceAddToCartMethodHook" alias="addToCartHistoryCommerceAddToCartMethodHook"/>
+	<bean id="defaultAddToCartHistoryCommerceAddToCartMethodHook"
+		  class="tr.nttdata.bootcamp.core.order.hook.impl.AddToCartHistoryCommerceAddToCartMethodHook">
+		<property name="modelService" ref="modelService"/>
+	</bean>
+
+	<bean id="addToCartHistoryCommerceAddToCartMethodHookMergeDirective" depends-on="commerceAddToCartMethodHooks" parent="listMergeDirective">
+		<property name="add" ref="addToCartHistoryCommerceAddToCartMethodHook"/>
+	</bean>
+
 	<alias name="defaultNttUserDao" alias="nttUserDao"/>
 	<bean id="defaultNttUserDao" class="tr.nttdata.bootcamp.core.user.dao.impl.DefaultNttUserDao">
 		<constructor-arg ref="flexibleSearchService"/>

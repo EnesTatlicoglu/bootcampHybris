@@ -181,5 +181,31 @@
             </itemtype>
         </typegroup>
 
+        <typegroup name="Cart">
+            <itemtype code="AddToCartHistory" autocreate="true" generate="true">
+                <deployment table="addtocarthistory" typecode="20591"/>
+                <attributes>
+                    <attribute qualifier="product" type="Product">
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="user" type="User">
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="cartCode" type="java.lang.String">
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="quantity" type="java.lang.Long">
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="quantityAdded" type="java.lang.Long">
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="statusCode" type="java.lang.String">
+                        <persistence type="property"/>
+                    </attribute>
+                </attributes>
+            </itemtype>
+        </typegroup>
+
     </itemtypes>
 </items>
