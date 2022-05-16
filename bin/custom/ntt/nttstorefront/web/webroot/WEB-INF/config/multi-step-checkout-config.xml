@@ -144,10 +144,23 @@
 			<map merge="true">
 				<entry key="previous" value-ref="REDIRECT_TO_DELIVERY_ADDRESS"/>
 				<entry key="current" value-ref="REDIRECT_TO_DELIVERY_METHOD"/>
-				<entry key="next" value-ref="REDIRECT_TO_PAYMENT_METHOD"/>
+				<entry key="next" value-ref="REDIRECT_TO_CUSTOMER_NOTE"/>
 			</map>
 		</property>
 		<property name="progressBarId" value="deliveryMethod"/>
+	</bean>
+
+	<alias name="defaultResponsiveCustomerNoteCheckoutStep" alias="responsiveCustomerNoteCheckoutStep" />
+	<bean id="defaultResponsiveCustomerNoteCheckoutStep"  parent="checkoutStep">
+		<property name="checkoutGroup" ref="responsiveCheckoutGroup"/>
+		<property name="transitions">
+			<map merge="true">
+				<entry key="previous" value-ref="REDIRECT_TO_DELIVERY_METHOD"/>
+				<entry key="current" value-ref="REDIRECT_TO_CUSTOMER_NOTE"/>
+				<entry key="next" value-ref="REDIRECT_TO_PAYMENT_METHOD"/>
+			</map>
+		</property>
+		<property name="progressBarId" value="customerNote"/>
 	</bean>
 
 	<alias name="defaultResponsivePaymentMethodCheckoutStep" alias="responsivePaymentMethodCheckoutStep" />
@@ -156,7 +169,7 @@
 		<property name="checkoutStepValidator" ref="defaultResponsivePaymentMethodCheckoutValidator"/>
 		<property name="transitions">
 			<map merge="true">
-				<entry key="previous" value-ref="REDIRECT_TO_DELIVERY_METHOD"/>
+				<entry key="previous" value-ref="REDIRECT_TO_CUSTOMER_NOTE"/>
 				<entry key="current" value-ref="REDIRECT_TO_PAYMENT_METHOD"/>
 				<entry key="next" value-ref="REDIRECT_TO_SUMMARY"/>
 			</map>
@@ -265,6 +278,7 @@
 				<entry key="multi" value-ref="responsiveMultiStepCheckout"/>
 				<entry key="delivery-address" value-ref="responsiveDeliveryAddressCheckoutStep"/>
 				<entry key="delivery-method" value-ref="responsiveDeliveryMethodCheckoutStep"/>
+				<entry key="customer-note" value-ref="responsiveCustomerNoteCheckoutStep"/>
 				<entry key="payment-method" value-ref="responsivePaymentMethodCheckoutStep"/>
 				<entry key="summary" value-ref="responsiveSummaryCheckoutStep"/>
 			</map>
@@ -276,6 +290,7 @@
 				<entry key="REDIRECT_TO_CART" value-ref="REDIRECT_TO_CART"/>
 				<entry key="REDIRECT_TO_PAYMENT_METHOD" value-ref="REDIRECT_TO_PAYMENT_METHOD"/>
 				<entry key="REDIRECT_TO_DELIVERY_METHOD" value-ref="REDIRECT_TO_DELIVERY_METHOD"/>
+				<entry key="REDIRECT_TO_CUSTOMER_NOTE" value-ref="REDIRECT_TO_CUSTOMER_NOTE"/>
 				<entry key="REDIRECT_TO_SUMMARY" value-ref="REDIRECT_TO_SUMMARY"/>
 			</map>
 		</property>
@@ -283,8 +298,9 @@
 			<map merge="true">
 				<entry key="1" value-ref="responsiveDeliveryAddressCheckoutStep"/>
 				<entry key="2" value-ref="responsiveDeliveryMethodCheckoutStep"/>
-				<entry key="3" value-ref="responsivePaymentMethodCheckoutStep"/>
-				<entry key="4" value-ref="responsiveSummaryCheckoutStep"/>
+				<entry key="3" value-ref="responsiveCustomerNoteCheckoutStep"/>
+				<entry key="4" value-ref="responsivePaymentMethodCheckoutStep"/>
+				<entry key="5" value-ref="responsiveSummaryCheckoutStep"/>
 			</map>
 		</property>
 	</bean>
@@ -338,6 +354,10 @@
 
 	<bean id="REDIRECT_TO_DELIVERY_METHOD" class="java.lang.String">
 		<constructor-arg value="redirect:/checkout/multi/delivery-method/choose"/>
+	</bean>
+
+	<bean id="REDIRECT_TO_CUSTOMER_NOTE" class="java.lang.String">
+		<constructor-arg value="redirect:/checkout/multi/customer-note/add"/>
 	</bean>
 
 	<bean id="REDIRECT_TO_PICKUP_LOCATION" class="java.lang.String">

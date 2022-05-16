@@ -12,6 +12,38 @@
 		
 	<context:annotation-config/>
 
+
+	<alias name="defaultCartCustomerNoteFacade" alias="cartCustomerNoteFacade"/>
+	<bean id="defaultCartCustomerNoteFacade" class="tr.nttdata.bootcamp.facades.order.impl.DefaultCartCustomerNoteFacade" >
+		<property name="cartService" ref="cartService"/>
+		<property name="cartCustomerNoteService" ref="cartCustomerNoteService"/>
+	</bean>
+
+	<alias name="defaultOrderCustomerNotePopulator" alias="orderCustomerNotePopulator"/>
+	<bean id="defaultOrderCustomerNotePopulator" class="tr.nttdata.bootcamp.facades.populators.OrderCustomerNotePopulator" >
+	</bean>
+
+	<bean parent="modifyPopulatorList">
+		<property name="list" ref="orderConverter"/>
+		<property name="add" ref="orderCustomerNotePopulator"/>
+	</bean>
+
+	<alias name="defaultCartCustomerNotePopulator" alias="cartCustomerNotePopulator"/>
+	<bean id="defaultCartCustomerNotePopulator" class="tr.nttdata.bootcamp.facades.populators.CartCustomerNotePopulator" >
+	</bean>
+
+	<bean parent="modifyPopulatorList">
+		<property name="list" ref="cartConverter"/>
+		<property name="add" ref="cartCustomerNotePopulator"/>
+	</bean>
+
+	<bean parent="modifyPopulatorList">
+		<property name="list" ref="extendedCartConverter"/>
+		<property name="add" ref="cartCustomerNotePopulator"/>
+	</bean>
+
+
+
 	<!-- Search Result Product Populator -->
 	<bean id="nttSearchResultProductPopulator" parent="defaultCommerceSearchResultProductPopulator"
 		  class="tr.nttdata.bootcamp.facades.populators.NttSearchResultProductPopulator">

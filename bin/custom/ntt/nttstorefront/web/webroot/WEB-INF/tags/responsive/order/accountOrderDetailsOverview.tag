@@ -45,6 +45,18 @@
                 </ycommerce:testId>
             </div>
         </div>
+
+        <c:if test="${not empty orderData.customerNote}">
+            <div class="col-sm-3">
+                <div class="item-group">
+                    <ycommerce:testId code="orderDetail_overviewCustomerNote_label">
+                        <span class="item-label"><spring:theme code="text.account.order.customerNote"/></span>
+                        <span class="item-value">${fn:escapeXml(orderData.customerNote)}</span>
+                    </ycommerce:testId>
+                </div>
+            </div>
+        </c:if>
+
         <c:if test="${orderData.quoteCode ne null}">
 			  <div class="col-sm-3">
 			  	  <div class="item-group">

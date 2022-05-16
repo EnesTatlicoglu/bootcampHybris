@@ -182,6 +182,18 @@
         </typegroup>
 
         <typegroup name="Cart">
+            <itemtype code="AbstractOrder" generate="false" autocreate="false">
+                <attributes>
+                    <attribute qualifier="customerNote" type="java.lang.String">
+                        <persistence type="property">
+                            <columntype>
+                                <value>HYBRIS.LONG_STRING</value>
+                            </columntype>
+                        </persistence>
+                    </attribute>
+                </attributes>
+            </itemtype>
+
             <itemtype code="AddToCartHistory" autocreate="true" generate="true">
                 <deployment table="addtocarthistory" typecode="20591"/>
                 <attributes>

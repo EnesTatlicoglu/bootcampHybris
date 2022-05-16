@@ -7,8 +7,12 @@
 	<enum class="de.hybris.platform.commercefacades.product.ProductOption">
 		<value>BADGES</value>
 	</enum>
-	
-	
+
+
+	<bean class="de.hybris.platform.commercefacades.order.data.AbstractOrderData">
+		<property name="customerNote" type="java.lang.String"/>
+	</bean>
+
 	<bean class="de.hybris.platform.commercefacades.product.data.ProductData">
 		<property name="genders" type="java.util.List&lt;tr.nttdata.bootcamp.facades.product.data.GenderData>"/>
 		<property name="badges" type="java.util.List&lt;tr.nttdata.bootcamp.facades.product.data.ProductBadgeData>"/>

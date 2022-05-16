@@ -18,6 +18,16 @@
 	<import resource="classpath:/nttcore/integration/hot-folder-store-apparel-spring.xml"/>
 	<import resource="classpath:/nttcore/integration/hot-folder-common-spring.xml"/>
 
+	<alias name="defaultCartCustomerNoteStrategy" alias="cartCustomerNoteStrategy"/>
+	<bean id="defaultCartCustomerNoteStrategy" class="tr.nttdata.bootcamp.core.order.strategy.impl.DefaultCartCustomerNoteStrategy" >
+		<property name="modelService" ref="modelService"/>
+	</bean>
+
+	<alias name="defaultCartCustomerNoteService" alias="cartCustomerNoteService"/>
+	<bean id="defaultCartCustomerNoteService" class="tr.nttdata.bootcamp.core.order.impl.DefaultCartCustomerNoteService" >
+		<property name="cartCustomerNoteStrategy" ref="cartCustomerNoteStrategy"/>
+	</bean>
+
 	<alias name="defaultAddToCartHistoryCommerceAddToCartMethodHook" alias="addToCartHistoryCommerceAddToCartMethodHook"/>
 	<bean id="defaultAddToCartHistoryCommerceAddToCartMethodHook"
 		  class="tr.nttdata.bootcamp.core.order.hook.impl.AddToCartHistoryCommerceAddToCartMethodHook">
