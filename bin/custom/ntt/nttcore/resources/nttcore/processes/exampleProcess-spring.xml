@@ -21,4 +21,12 @@
           class="tr.nttdata.bootcamp.core.actions.example.EndProcessAction">
     </bean>
 
+    <bean id="multipleChoiceAction" parent="abstractAction"
+          class="tr.nttdata.bootcamp.core.actions.example.MultipleChoiceAction">
+    </bean>
+
+    <bean id="continueWithoutEventAction" parent="abstractAction"
+          class="tr.nttdata.bootcamp.core.actions.example.ContinueWithoutEventAction">
+    </bean>
+
 </beans>
