@@ -18,6 +18,15 @@
 	<import resource="classpath:/nttcore/integration/hot-folder-store-apparel-spring.xml"/>
 	<import resource="classpath:/nttcore/integration/hot-folder-common-spring.xml"/>
 
+	<!-- Process Definition Resource -->
+	<bean id="exampleProcessDefinitionResource" class="de.hybris.platform.processengine.definition.ProcessDefinitionResource" >
+		<property name="resource" value="classpath:/nttcore/processes/exampleProcess.xml"/>
+	</bean>
+
+	<!-- Import process actions -->
+	<import resource="classpath:/nttcore/processes/exampleProcess-spring.xml"/>
+
+	<!---->
 	<alias name="defaultCartCustomerNoteStrategy" alias="cartCustomerNoteStrategy"/>
 	<bean id="defaultCartCustomerNoteStrategy" class="tr.nttdata.bootcamp.core.order.strategy.impl.DefaultCartCustomerNoteStrategy" >
 		<property name="modelService" ref="modelService"/>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ Copyright (c) 2019 SAP SE or an SAP affiliate company. All rights reserved.
+-->
+<process xmlns="http://www.hybris.de/xsd/processdefinition" start="startProcess" name="exampleProcess"
+         processClass="de.hybris.platform.processengine.model.BusinessProcessModel" onError="error">
+
+    <action id="startProcess" bean="startProcessAction">
+        <transition name="OK" to="endProcess"/>
+        <transition name="NOK" to="error"/>
+    </action>
+
+    <action id="endProcess" bean="endProcessAction">
+        <transition name="OK" to="success"/>
+    </action>
+
+    <end id="error" state="ERROR">Something went wrong.</end>
+    <end id="success" state="SUCCEEDED">Process completed successfully.</end>
+
+</process>
