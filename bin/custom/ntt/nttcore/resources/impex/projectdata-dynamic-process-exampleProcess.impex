@@ -1,0 +1,44 @@
+INSERT_UPDATE DynamicProcessDefinition;code[unique=true];content;active[unique=true,default=true];
+                                      ;exampleProcess;"<process xmlns='http://www.hybris.de/xsd/processdefinition' start='startProcess' name='exampleProcess'
+processClass='de.hybris.platform.processengine.model.BusinessProcessModel' onError='error'>
+
+<action id='startProcess' bean='startProcessAction'>
+  <transition name='OK' to='endProcess'/>
+  <transition name='NOK' to='waitForEvent'/>
+</action>
+
+<wait id='waitForEvent' then='multipleChoice'>
+  <event>WaitEndedEvent</event>
+</wait>
+
+<action id='multipleChoice' bean='multipleChoiceAction'>
+  <transition name='GOOD' to='notifyAdmin'/>
+  <transition name='BAD' to='waitForChoices'/>
+  <transition name='UGLY' to='waitForEvent'/>
+</action>
+
+<notify id='notifyAdmin' then='endProcess'>
+  <userGroup name='admingroup'>
+    <locmessage name='Process notifies admin' language='en'/>
+  </userGroup>
+</notify>
+
+<wait id='waitForChoices' then='continueWithoutEvent'>
+  <case event='Pill'>
+    <choice id='Blue' then='waitForEvent'/>
+    <choice id='Red' then='endProcess'/>
+  </case>
+</wait>
+
+<action id='continueWithoutEvent' bean='continueWithoutEventAction'>
+  <transition name='OK' to='endProcess'/>
+</action>
+
+<action id='endProcess' bean='endProcessAction'>
+  <transition name='OK' to='success'/>
+</action>
+
+<end id='error' state='ERROR'>Something went wrong.</end>
+<end id='success' state='SUCCEEDED'>Process completed successfully.</end>
+
+</process>"
