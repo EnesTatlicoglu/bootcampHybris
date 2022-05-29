@@ -18,6 +18,23 @@
 	<import resource="classpath:/nttcore/integration/hot-folder-store-apparel-spring.xml"/>
 	<import resource="classpath:/nttcore/integration/hot-folder-common-spring.xml"/>
 
+	<alias name="defaultPromotedUserGroupConfigurationDao" alias="promotedUserGroupConfigurationDao"/>
+	<bean name="defaultPromotedUserGroupConfigurationDao"
+		  class="tr.nttdata.bootcamp.core.user.dao.impl.DefaultPromotedUserGroupConfigurationDao"/>
+
+	<alias name="defaultPromotedUserGroupConfigurationService" alias="promotedUserGroupConfigurationService"/>
+	<bean name="defaultPromotedUserGroupConfigurationService"
+		  class="tr.nttdata.bootcamp.core.user.service.impl.DefaultPromotedUserGroupConfigurationService">
+		<property name="promotedUserGroupConfigurationDao" ref="promotedUserGroupConfigurationDao"/>
+		<property name="nttUserDao" ref="nttUserDao"/>
+	</bean>
+
+	<bean name="updateCustomerPromotedUserGroupsJob" parent="abstractJobPerformable"
+		  class="tr.nttdata.bootcamp.core.job.UpdateCustomerPromotedUserGroupsJob">
+		<property name="promotedUserGroupConfigurationService" ref="promotedUserGroupConfigurationService"/>
+	</bean>
+
+
 	<!---->
 	<bean id="sampleTaskRunner" class="tr.nttdata.bootcamp.core.task.SampleTaskRunner"/>
 

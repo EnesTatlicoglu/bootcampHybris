@@ -48,6 +48,9 @@
 								<li class="logged_in js-logged_in">
 									<ycommerce:testId code="header_LoggedUser">
 										<spring:theme code="header.welcome" arguments="${user.firstName},${user.lastName}" />
+										<c:if test="${user.promotedUserGroup != null}">
+										    (<c:out value="${user.promotedUserGroup.description}"/>)
+										</c:if>
 									</ycommerce:testId>
 								</li>
 							</sec:authorize>

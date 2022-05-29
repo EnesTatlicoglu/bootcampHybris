@@ -12,7 +12,43 @@
 		
 	<context:annotation-config/>
 
+	<!---->
+	<alias name="defaultPromotedUserGroupFacade" alias="promotedUserGroupFacade"/>
+	<bean id="defaultPromotedUserGroupFacade" class="tr.nttdata.bootcamp.facades.user.impl.DefaultPromotedUserGroupFacade" >
+		<property name="promotedUserGroupConfigurationService" ref="promotedUserGroupConfigurationService"/>
+		<property name="userService" ref="userService"/>
+		<property name="promotedUserGroupConverter" ref="promotedUserGroupConverter"/>
+	</bean>
 
+	<!---->
+	<alias name="defaultCustomerPromotedUserGroupPopulator" alias="customerPromotedUserGroupPopulator"/>
+	<bean id="defaultCustomerPromotedUserGroupPopulator" class="tr.nttdata.bootcamp.facades.populators.CustomerPromotedUserGroupPopulator">
+		<property name="promotedUserGroupConfigurationService" ref="promotedUserGroupConfigurationService"/>
+		<property name="promotedUserGroupConverter" ref="promotedUserGroupConverter"/>
+	</bean>
+
+	<bean parent="modifyPopulatorList">
+		<property name="list" ref="customerConverter"/>
+		<property name="add" ref="customerPromotedUserGroupPopulator"/>
+	</bean>
+
+	<!---->
+	<alias name="defaultPromotedUserGroupPopulator" alias="promotedUserGroupPopulator"/>
+	<bean id="defaultPromotedUserGroupPopulator" class="tr.nttdata.bootcamp.facades.populators.PromotedUserGroupPopulator">
+	</bean>
+
+	<alias name="defaultPromotedUserGroupConverter" alias="promotedUserGroupConverter"/>
+	<bean id="defaultPromotedUserGroupConverter" parent="abstractPopulatingConverter">
+		<property name="targetClass" value="tr.nttdata.bootcamp.facades.user.data.PromotedUserGroupData"/>
+		<property name="populators">
+			<list>
+				<ref bean="promotedUserGroupPopulator"/>
+			</list>
+		</property>
+	</bean>
+
+
+	<!---->
 	<alias name="defaultCartCustomerNoteFacade" alias="cartCustomerNoteFacade"/>
 	<bean id="defaultCartCustomerNoteFacade" class="tr.nttdata.bootcamp.facades.order.impl.DefaultCartCustomerNoteFacade" >
 		<property name="cartService" ref="cartService"/>

@@ -29,4 +29,16 @@
 		<property name="description" type="String"/>
 		<property name="logo" type="de.hybris.platform.commercefacades.product.data.ImageData"/>
 	</bean>
+
+	<bean class="de.hybris.platform.commercefacades.user.data.CustomerData">
+		<property name="promotedUserGroup" type="tr.nttdata.bootcamp.facades.user.data.PromotedUserGroupData"/>
+	</bean>
+
+	<bean class="tr.nttdata.bootcamp.facades.user.data.PromotedUserGroupData">
+		<property name="description" type="String"/>
+		<property name="threshold" type="Double"/>
+		<property name="timePeriod" type="Integer"/>
+		<property name="customerOrderTotal" type="Double"/>
+	</bean>
+
 </beans>

@@ -96,7 +96,7 @@
                     <description>Description of the badge</description>
                     <persistence type="property">
                         <columntype>
-                            <value>HYBRIS.LONG.STRING</value>
+                            <value>HYBRIS.LONG_STRING</value>
                         </columntype>
                     </persistence>
                 </attribute>
@@ -106,6 +106,39 @@
                     <key attribute="code"/>
                 </index>
             </indexes>
+        </itemtype>
+
+        <itemtype code="PromotedUserGroupConfiguration" autocreate="true" generate="true">
+            <deployment table="promotedugconfiguration" typecode="20600"/>
+            <attributes>
+                <attribute qualifier="userGroup" type="userGroup">
+                    <modifiers unique="true" optional="false" initial="true" write="false"/>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="active" type="boolean">
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="priority" type="int">
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="orderThreshold" type="double">
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="timePeriod" type="int">
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="description" type="java.lang.String">
+                    <persistence type="property"/>
+                </attribute>
+            </attributes>
+        </itemtype>
+        
+        <itemtype code="Customer" autocreate="false" generate="false">
+            <attributes>
+                <attribute qualifier="promotedUserGroup" type="UserGroup">
+                    <persistence type="property"/>
+                </attribute>
+            </attributes>
         </itemtype>
 
 

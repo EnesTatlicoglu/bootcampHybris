@@ -1,5 +1,6 @@
 package tr.nttdata.bootcamp.core.user.dao;
 
+import de.hybris.platform.core.model.user.CustomerModel;
 import de.hybris.platform.core.model.user.UserModel;
 
 public interface NttUserDao {
@@ -10,5 +11,7 @@ public interface NttUserDao {
      * @return true if user has order, false otherwise
      */
     boolean hasOrder(UserModel user);
+
+    Double getOrderTotalForCustomer(CustomerModel customer, int timePeriod);
 
 }

@@ -52,6 +52,8 @@ import de.hybris.platform.servicelayer.exceptions.AmbiguousIdentifierException;
 import de.hybris.platform.servicelayer.exceptions.ModelNotFoundException;
 import de.hybris.platform.servicelayer.exceptions.UnknownIdentifierException;
 import de.hybris.platform.util.Config;
+import org.springframework.beans.factory.annotation.Autowired;
+import tr.nttdata.bootcamp.facades.user.PromotedUserGroupFacade;
 import tr.nttdata.bootcamp.storefront.controllers.ControllerConstants;
 
 import java.util.Arrays;
@@ -194,6 +196,9 @@ public class AccountPageController extends AbstractSearchPageController
 	@Resource(name = "addressDataUtil")
 	private AddressDataUtil addressDataUtil;
 
+	@Autowired
+	private PromotedUserGroupFacade promotedUserGroupFacade;
+
 	protected PasswordValidator getPasswordValidator()
 	{
 		return passwordValidator;
@@ -308,6 +313,7 @@ public class AccountPageController extends AbstractSearchPageController
 		final PageableData pageableData = createPageableData(page, 5, sortCode, showMode);
 		final SearchPageData<OrderHistoryData> searchPageData = orderFacade.getPagedOrderHistoryForStatuses(pageableData);
 		populateModel(model, searchPageData, showMode);
+		model.addAttribute("promotedUserGroups", promotedUserGroupFacade.getPromotedUserGroups());
 		final ContentPageModel orderHistoryPage = getContentPageForLabelOrId(ORDER_HISTORY_CMS_PAGE);
 		storeCmsPageInModel(model, orderHistoryPage);
 		setUpMetaDataForContentPage(model, orderHistoryPage);

@@ -14,6 +14,13 @@
 	<spring:theme code="text.account.orderHistory" />
 </div>
 
+<c:if test="${not empty promotedUserGroups}">
+    <c:forEach items="${promotedUserGroups}" var="promotedUserGroup">
+        </br>
+        ${promotedUserGroup.description} - ${promotedUserGroup.threshold} in ${promotedUserGroup.timePeriod} days - Your value : ${promotedUserGroup.customerOrderTotal}
+    </c:forEach>
+</c:if>
+
 <c:if test="${empty searchPageData.results}">
 	<div class="account-section-content content-empty">
 		<ycommerce:testId code="orderHistory_noOrders_label">

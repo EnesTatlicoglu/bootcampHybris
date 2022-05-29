@@ -7,6 +7,11 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
            http://www.springframework.org/schema/beans/spring-beans.xsd">
 
+	<alias name="customUserRaoPopulator" alias="userRaoPopulator" />
+	<bean id="customUserRaoPopulator" parent="defaultUserRaoPopulator"
+		  class="tr.nttdata.bootcamp.promotionengineservices.populators.CustomUserRaoPopulator">
+	</bean>
+
 	<alias name="defaultNttUserRaoPopulator" alias="nttUserRaoPopulator"/>
 	<bean id="defaultNttUserRaoPopulator" class="tr.nttdata.bootcamp.promotionengineservices.populators.NttUserRaoPopulator">
 		<property name="nttUserDao" ref="nttUserDao"/>
