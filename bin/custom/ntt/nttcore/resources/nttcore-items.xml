@@ -140,6 +140,23 @@
                 </attribute>
             </attributes>
         </itemtype>
+        
+        <itemtype code="ProductViewHistory" autocreate="true" generate="true">
+            <deployment table="productviewhistories" typecode="20601"/>
+            <attributes>
+                <attribute qualifier="product" type="Product">
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="user" type="User">
+                    <persistence type="property"/>
+                </attribute>
+            </attributes>
+            <indexes>
+                <index name="productIdx">
+                    <key attribute="product"/>
+                </index>
+            </indexes>
+        </itemtype>
 
 
         <!-- TypeGroups are for structure of this file only -->

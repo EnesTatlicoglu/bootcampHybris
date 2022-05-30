@@ -32,6 +32,8 @@ import de.hybris.platform.core.model.product.ProductModel;
 import de.hybris.platform.product.ProductService;
 import de.hybris.platform.servicelayer.exceptions.UnknownIdentifierException;
 import de.hybris.platform.util.Config;
+import org.springframework.beans.factory.annotation.Autowired;
+import tr.nttdata.bootcamp.facades.product.ProductViewHistoryFacade;
 import tr.nttdata.bootcamp.storefront.controllers.ControllerConstants;
 
 import java.io.UnsupportedEncodingException;
@@ -111,6 +113,9 @@ public class ProductPageController extends AbstractPageController
 	@Resource(name = "futureStockFacade")
 	private FutureStockFacade futureStockFacade;
 
+	@Autowired
+	private ProductViewHistoryFacade productViewHistoryFacade;
+
 	@RequestMapping(value = PRODUCT_CODE_PATH_VARIABLE_PATTERN, method = RequestMethod.GET)
 	public String productDetail(@PathVariable("productCode") final String productCode, final Model model,
 			final HttpServletRequest request, final HttpServletResponse response)
@@ -131,6 +136,8 @@ public class ProductPageController extends AbstractPageController
 
 
 		populateProductDetailForDisplay(productCode, model, request, extraOptions);
+
+		productViewHistoryFacade.createProductViewHistory(productCode);
 
 		model.addAttribute(new ReviewForm());
 		model.addAttribute("pageType", PageType.PRODUCT.name());
@@ -415,6 +422,8 @@ public class ProductPageController extends AbstractPageController
 					Boolean.valueOf(CollectionUtils.isNotEmpty(productData.getVariantMatrix())));
 		}
 	}
+
+
 
 	protected void populateProductData(final ProductData productData, final Model model)
 	{

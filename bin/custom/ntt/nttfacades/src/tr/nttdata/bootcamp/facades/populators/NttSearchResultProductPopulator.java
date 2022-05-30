@@ -10,6 +10,7 @@ public class NttSearchResultProductPopulator extends SearchResultProductPopulato
     @Override
     public void populate(SearchResultValueData source, ProductData target) throws ConversionException {
         target.setNumberOfReviews(this.<Integer>getValue(source, "reviewCount"));
+        target.setTotalViewCount(this.<Integer>getValue(source, "totalViewCount"));
     }
 
 }

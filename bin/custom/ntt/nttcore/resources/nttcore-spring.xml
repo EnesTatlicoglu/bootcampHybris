@@ -18,6 +18,44 @@
 	<import resource="classpath:/nttcore/integration/hot-folder-store-apparel-spring.xml"/>
 	<import resource="classpath:/nttcore/integration/hot-folder-common-spring.xml"/>
 
+
+	<!--Sorting By Popularity-->
+
+	<alias name="defaultProductViewHistoryDao" alias="productViewHistoryDao"/>
+	<bean name="defaultProductViewHistoryDao"
+		  class="tr.nttdata.bootcamp.core.product.dao.impl.DefaultProductViewHistoryDao"/>
+
+	<alias name="defaultProductViewHistoryService" alias="productViewHistoryService"/>
+	<bean name="defaultProductViewHistoryService"
+		  class="tr.nttdata.bootcamp.core.product.service.impl.DefaultProductViewHistoryService">
+		<property name="productViewHistoryDao" ref="productViewHistoryDao"/>
+		<property name="modelService" ref="modelService"/>
+	</bean>
+
+	<!--Reorder Functionality-->
+	<alias name="defaultCreateCartFromOrderStrategy" alias="createCartFromOrderStrategy"/>
+	<bean name="defaultCreateCartFromOrderStrategy"
+		  class="tr.nttdata.bootcamp.core.order.strategy.impl.DefaultCreateCartFromOrderStrategy">
+		<property name="cloneAbstractOrderStrategy" ref="cloneAbstractOrderStrategy"/>
+		<property name="keyGenerator" ref="orderCodeGenerator"/>
+	</bean>
+
+	<alias name="defaultReorderStrategy" alias="reorderStrategy"/>
+	<bean name="defaultReorderStrategy"
+		  class="tr.nttdata.bootcamp.core.order.strategy.impl.DefaultReorderStrategy">
+		<property name="createCartFromOrderStrategy" ref="createCartFromOrderStrategy"/>
+		<property name="modelService" ref="modelService"/>
+		<property name="commerceCartRestorationStrategy" ref="commerceCartRestorationStrategy"/>
+		<property name="cartService" ref="cartService"/>
+	</bean>
+
+	<alias name="defaultReorderService" alias="reorderService"/>
+	<bean name="defaultReorderService"
+		  class="tr.nttdata.bootcamp.core.order.service.impl.DefaultReorderService">
+		<property name="reorderStrategy" ref="reorderStrategy"/>
+	</bean>
+
+	<!---->
 	<alias name="defaultPromotedUserGroupConfigurationDao" alias="promotedUserGroupConfigurationDao"/>
 	<bean name="defaultPromotedUserGroupConfigurationDao"
 		  class="tr.nttdata.bootcamp.core.user.dao.impl.DefaultPromotedUserGroupConfigurationDao"/>
@@ -69,6 +107,12 @@
 		  class="tr.nttdata.bootcamp.core.search.solrfacetsearch.provider.impl.ProductReviewCountValueResolver"
 		  parent="abstractValueResolver">
 		<property name="customerReviewService" ref="customerReviewService" />
+	</bean>
+
+	<bean id="productTotalViewCountValueResolver"
+		  class="tr.nttdata.bootcamp.core.search.solrfacetsearch.provider.impl.ProductTotalViewCountValueResolver"
+		  parent="abstractValueResolver">
+		<property name="productViewHistoryService" ref="productViewHistoryService" />
 	</bean>
 
 	<!-- ATTRIBUTEHANDLERS -->

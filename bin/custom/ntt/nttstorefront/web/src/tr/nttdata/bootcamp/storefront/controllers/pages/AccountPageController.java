@@ -53,6 +53,7 @@ import de.hybris.platform.servicelayer.exceptions.ModelNotFoundException;
 import de.hybris.platform.servicelayer.exceptions.UnknownIdentifierException;
 import de.hybris.platform.util.Config;
 import org.springframework.beans.factory.annotation.Autowired;
+import tr.nttdata.bootcamp.facades.order.ReorderFacade;
 import tr.nttdata.bootcamp.facades.user.PromotedUserGroupFacade;
 import tr.nttdata.bootcamp.storefront.controllers.ControllerConstants;
 
@@ -197,6 +198,9 @@ public class AccountPageController extends AbstractSearchPageController
 	private AddressDataUtil addressDataUtil;
 
 	@Autowired
+	private ReorderFacade reorderFacade;
+
+	@Autowired
 	private PromotedUserGroupFacade promotedUserGroupFacade;
 
 	protected PasswordValidator getPasswordValidator()
@@ -320,6 +324,20 @@ public class AccountPageController extends AbstractSearchPageController
 		model.addAttribute(BREADCRUMBS_ATTR, accountBreadcrumbBuilder.getBreadcrumbs("text.account.orderHistory"));
 		model.addAttribute(ThirdPartyConstants.SeoRobots.META_ROBOTS, ThirdPartyConstants.SeoRobots.NOINDEX_NOFOLLOW);
 		return getViewForPage(model);
+	}
+
+	@RequestMapping(value = "/orders/re-order", method = RequestMethod.POST)
+	@RequireHardLogIn
+	public String reorder(@RequestParam(value = "orderCode") final String orderCode,
+						  final Model model, final RedirectAttributes redirectAttributes) throws CMSItemNotFoundException {
+		if (reorderFacade.reorder(orderCode)) {
+			GlobalMessages.addFlashMessage(redirectAttributes, GlobalMessages.INFO_MESSAGES_HOLDER, "reorder.success.message", new Object[]{orderCode});
+			return REDIRECT_PREFIX + "/cart";
+		} else {
+			GlobalMessages.addFlashMessage(redirectAttributes, GlobalMessages.ERROR_MESSAGES_HOLDER, "reorder.failed.message", new Object[]{orderCode});
+
+		}
+		return REDIRECT_TO_ORDER_HISTORY_PAGE;
 	}
 
 	@RequestMapping(value = "/order/" + ORDER_CODE_PATH_VARIABLE_PATTERN, method = RequestMethod.GET)

@@ -5,10 +5,14 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="ycommerce" uri="http://hybris.com/tld/ycommercetags" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+
 
 <spring:htmlEscape defaultHtmlEscape="true" />
 
 <c:set var="searchUrl" value="/my-account/orders?sort=${ycommerce:encodeUrl(searchPageData.pagination.sort)}"/>
+
+<spring:url var="reorderPostUrl" value="/my-account/orders/re-order" htmlEscape="false"/>
 
 <div class="account-section-header">
 	<spring:theme code="text.account.orderHistory" />
@@ -41,6 +45,7 @@
 						<th><spring:theme code="text.account.orderHistory.orderStatus"/></th>
 						<th><spring:theme code="text.account.orderHistory.datePlaced"/></th>
 						<th><spring:theme code="text.account.orderHistory.total"/></th>
+						<th></th>
 					</tr>
 					<c:forEach items="${searchPageData.results}" var="order">
 						<tr class="responsive-table-item">
@@ -66,6 +71,12 @@
 								<td class="responsive-table-cell responsive-table-cell-bold">
 									${fn:escapeXml(order.total.formattedValue)}
 								</td>
+								<td class="responsive-table-cell responsive-table-cell-bold">
+								    <form:form id="reorderForm_${order.code}" name="reorderForm" action="${fn:escapeXml(reorderPostUrl)}" method="post">
+								        <input type="hidden" value="${order.code}" name="orderCode"/>
+                                        <button type="submit">Re-order</button>
+                                    </form:form>
+                                </td>
 							</ycommerce:testId>
 						</tr>
 					</c:forEach>

@@ -50,6 +50,7 @@
             <product:productReviewStars product="${product}"/>
         </c:if>
 
+        <div class="totalViewCount"><spring:theme code="product.view.count" arguments="${product.totalViewCount}"/></div>
 
 
 		<c:set var="product" value="${product}" scope="request"/>

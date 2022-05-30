@@ -12,6 +12,24 @@
 		
 	<context:annotation-config/>
 
+	<!--Sorting by Popularity-->
+
+	<alias name="defaultProductViewHistoryFacade" alias="productViewHistoryFacade"/>
+	<bean id="defaultProductViewHistoryFacade" class="tr.nttdata.bootcamp.facades.product.impl.DefaultProductViewHistoryFacade" >
+		<property name="productService" ref="productService"/>
+		<property name="userService" ref="userService"/>
+		<property name="productViewHistoryService" ref="productViewHistoryService"/>
+	</bean>
+
+	<!---->
+	<alias name="defaultReorderFacade" alias="reorderFacade"/>
+	<bean id="defaultReorderFacade" class="tr.nttdata.bootcamp.facades.order.impl.DefaultReorderFacade" >
+		<property name="userService" ref="userService"/>
+		<property name="customerAccountService" ref="customerAccountService"/>
+		<property name="baseStoreService" ref="baseStoreService"/>
+		<property name="reorderService" ref="reorderService"/>
+	</bean>
+
 	<!---->
 	<alias name="defaultPromotedUserGroupFacade" alias="promotedUserGroupFacade"/>
 	<bean id="defaultPromotedUserGroupFacade" class="tr.nttdata.bootcamp.facades.user.impl.DefaultPromotedUserGroupFacade" >
