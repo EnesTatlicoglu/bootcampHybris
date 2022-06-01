@@ -18,6 +18,13 @@
 	<import resource="classpath:/nttcore/integration/hot-folder-store-apparel-spring.xml"/>
 	<import resource="classpath:/nttcore/integration/hot-folder-common-spring.xml"/>
 
+	<!--Best Sellers OPTIONAL-->
+	<bean id="productIsBestSellerValueResolver"
+		  class="tr.nttdata.bootcamp.core.search.solrfacetsearch.provider.impl.ProductIsBestSellerValueResolver"
+		  parent="abstractValueResolver">
+		<property name="bestSellerProductService" ref="bestSellerProductService" />
+	</bean>
+
 	<!--Best Sellers-->
 	<bean id="productBestSellerCountValueResolver"
 		  class="tr.nttdata.bootcamp.core.search.solrfacetsearch.provider.impl.ProductBestSellerCountValueResolver"
