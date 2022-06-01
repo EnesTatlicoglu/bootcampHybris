@@ -158,6 +158,35 @@
             </indexes>
         </itemtype>
 
+        <itemtype code="BestSellerProduct " autocreate="true" generate="true">
+            <deployment table="bestsellerproducts" typecode="20602"/>
+            <attributes>
+                <attribute qualifier="productCode" type="java.lang.String">
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="soldCount" type="java.lang.Long">
+                    <persistence type="property"/>
+                </attribute>
+            </attributes>
+            <indexes>
+                <index name="productCodeIDX">
+                    <key attribute="productCode"/>
+                </index>
+            </indexes>
+        </itemtype>
+        
+        <itemtype code="BestSellerConfig" autocreate="true" generate="true" singleton="true">
+            <deployment table="bestsellerconfig" typecode="20603"/>
+            <attributes>
+                <attribute qualifier="days" type="java.lang.Integer">
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="totalCount" type="java.lang.Integer">
+                    <persistence type="property"/>
+                </attribute>
+            </attributes>
+        </itemtype>
+
 
         <!-- TypeGroups are for structure of this file only -->
 

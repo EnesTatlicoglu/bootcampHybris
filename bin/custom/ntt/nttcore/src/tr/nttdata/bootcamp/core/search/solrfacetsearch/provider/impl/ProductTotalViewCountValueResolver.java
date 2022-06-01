@@ -1,7 +1,6 @@
 package tr.nttdata.bootcamp.core.search.solrfacetsearch.provider.impl;
 
 import de.hybris.platform.core.model.product.ProductModel;
-import de.hybris.platform.customerreview.CustomerReviewService;
 import de.hybris.platform.solrfacetsearch.config.IndexedProperty;
 import de.hybris.platform.solrfacetsearch.config.exceptions.FieldValueProviderException;
 import de.hybris.platform.solrfacetsearch.indexer.IndexerBatchContext;

@@ -16,4 +16,6 @@ UPDATE SolrIndexedProperty;solrIndexedType(identifier)[unique=true];name[unique=
 ;$solrIndexedType;badges;"Badge"
 
 # Define the available sorts
-UPDATE SolrSort;indexedType(identifier)[unique=true];code[unique=true];name[lang=$lang];useBoost
+UPDATE SolrSort;indexedType(identifier)[unique=true];code[unique=true];name[lang=$lang]
+;$solrIndexedType;popularity;Popularity
+;$solrIndexedType;bestSeller;Best Seller

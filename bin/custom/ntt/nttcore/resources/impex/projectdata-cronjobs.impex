@@ -1,2 +1,3 @@
 INSERT_UPDATE CronJob;code[unique = true];job(code);sessionUser(uid[default='admin']);sessionCurrency(isocode[default='USD']);sessionLanguage(isocode[default='en'])
 ;updateCustomerPromotedUserGroupsCronJob;updateCustomerPromotedUserGroupsJob
+;bestSellerProductJob;bestSellerProductJob

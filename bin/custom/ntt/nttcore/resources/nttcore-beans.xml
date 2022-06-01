@@ -7,5 +7,10 @@
     <bean class="de.hybris.platform.commerceservices.service.data.CommerceCartParameter">
         <property name="customerNote" type="String"/>
     </bean>
+    
+    <bean class="tr.nttdata.bootcamp.core.product.data.ProductSellData">
+        <property name="productCode" type="java.lang.String"/>
+        <property name="soldCount" type="java.lang.Long"/>
+    </bean>
 
 </beans>

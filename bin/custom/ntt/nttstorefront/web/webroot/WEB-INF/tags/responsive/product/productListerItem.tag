@@ -52,6 +52,9 @@
 
         <div class="totalViewCount"><spring:theme code="product.view.count" arguments="${product.totalViewCount}"/></div>
 
+        <c:if test="${product.bestSellerCount != null}">
+            <div class="bestSellerCount"><spring:theme code="product.bestseller.count" arguments="${product.bestSellerCount}"/></div>
+        </c:if>
 
 		<c:set var="product" value="${product}" scope="request"/>
 		<c:set var="addToCartText" value="${addToCartText}" scope="request"/>

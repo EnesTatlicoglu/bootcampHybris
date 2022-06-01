@@ -17,6 +17,7 @@
 		<property name="genders" type="java.util.List&lt;tr.nttdata.bootcamp.facades.product.data.GenderData>"/>
 		<property name="badges" type="java.util.List&lt;tr.nttdata.bootcamp.facades.product.data.ProductBadgeData>"/>
 		<property name="totalViewCount" type="Integer"/>
+		<property name="bestSellerCount" type="java.lang.Long"/>
 	</bean>
 
 	<bean class="tr.nttdata.bootcamp.facades.product.data.GenderData">

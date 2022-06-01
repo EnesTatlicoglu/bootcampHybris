@@ -18,6 +18,32 @@
 	<import resource="classpath:/nttcore/integration/hot-folder-store-apparel-spring.xml"/>
 	<import resource="classpath:/nttcore/integration/hot-folder-common-spring.xml"/>
 
+	<!--Best Sellers-->
+	<bean id="productBestSellerCountValueResolver"
+		  class="tr.nttdata.bootcamp.core.search.solrfacetsearch.provider.impl.ProductBestSellerCountValueResolver"
+		  parent="abstractValueResolver">
+		<property name="bestSellerProductService" ref="bestSellerProductService" />
+	</bean>
+
+	<bean name="bestSellerProductJob" parent="abstractJobPerformable"
+		  class="tr.nttdata.bootcamp.core.job.BestSellerProductJob">
+		<property name="bestSellerProductService" ref="bestSellerProductService"/>
+	</bean>
+
+	<alias name="DefaultBestSellerProductService" alias="bestSellerProductService"/>
+	<bean id="DefaultBestSellerProductService"
+		  class="tr.nttdata.bootcamp.core.product.service.impl.DefaultBestSellerProductService">
+		<property name="bestSellerProductDao" ref="bestSellerProductDao"/>
+		<property name="bestSellerConfigDao" ref="bestSellerConfigDao"/>
+		<property name="modelService" ref="modelService"/>
+	</bean>
+
+	<alias name="DefaultBestSellerProductDao" alias="bestSellerProductDao"/>
+	<bean id="DefaultBestSellerProductDao" class="tr.nttdata.bootcamp.core.product.dao.impl.DefaultBestSellerProductDao"/>
+
+	<alias name="DefaultBestSellerConfigDao" alias="bestSellerConfigDao"/>
+	<bean id="DefaultBestSellerConfigDao" class="tr.nttdata.bootcamp.core.product.dao.impl.DefaultBestSellerConfigDao"/>
+
 
 	<!--Sorting By Popularity-->
 

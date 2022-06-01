@@ -8,9 +8,10 @@ import de.hybris.platform.servicelayer.dto.converter.ConversionException;
 public class NttSearchResultProductPopulator extends SearchResultProductPopulator {
 
     @Override
-    public void populate(SearchResultValueData source, ProductData target) throws ConversionException {
+        public void populate(SearchResultValueData source, ProductData target) throws ConversionException {
         target.setNumberOfReviews(this.<Integer>getValue(source, "reviewCount"));
         target.setTotalViewCount(this.<Integer>getValue(source, "totalViewCount"));
+        target.setBestSellerCount(this.<Long>getValue(source, "bestSellerCount"));
     }
 
 }
