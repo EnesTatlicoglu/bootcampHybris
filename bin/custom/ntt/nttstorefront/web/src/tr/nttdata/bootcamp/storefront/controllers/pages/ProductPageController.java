@@ -8,6 +8,7 @@ import de.hybris.platform.acceleratorservices.controllers.page.PageType;
 import de.hybris.platform.acceleratorstorefrontcommons.breadcrumb.impl.ProductBreadcrumbBuilder;
 import de.hybris.platform.acceleratorstorefrontcommons.constants.WebConstants;
 import de.hybris.platform.acceleratorstorefrontcommons.controllers.pages.AbstractPageController;
+import de.hybris.platform.acceleratorstorefrontcommons.controllers.util.GlobalMessage;
 import de.hybris.platform.acceleratorstorefrontcommons.controllers.util.GlobalMessages;
 import de.hybris.platform.acceleratorstorefrontcommons.forms.FutureStockForm;
 import de.hybris.platform.acceleratorstorefrontcommons.forms.ReviewForm;
@@ -32,8 +33,16 @@ import de.hybris.platform.core.model.product.ProductModel;
 import de.hybris.platform.product.ProductService;
 import de.hybris.platform.servicelayer.exceptions.UnknownIdentifierException;
 import de.hybris.platform.util.Config;
+import org.hsqldb.persist.Log;
 import org.springframework.beans.factory.annotation.Autowired;
+import tr.nttdata.bootcamp.core.enums.CustomerReviewReactionType;
+import tr.nttdata.bootcamp.core.jalo.ProductQuestion;
+import tr.nttdata.bootcamp.core.product.parameter.ProductQuestionParameter;
+import tr.nttdata.bootcamp.facades.product.CustomerReviewReactionFacade;
+import tr.nttdata.bootcamp.facades.product.ProductQuestionFacade;
 import tr.nttdata.bootcamp.facades.product.ProductViewHistoryFacade;
+import tr.nttdata.bootcamp.facades.product.data.ProductQuestionData;
+import tr.nttdata.bootcamp.facades.product.data.ProductQuestionParameterData;
 import tr.nttdata.bootcamp.storefront.controllers.ControllerConstants;
 
 import java.io.UnsupportedEncodingException;
@@ -65,6 +74,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.common.collect.Maps;
+import tr.nttdata.bootcamp.storefront.forms.ProductQuestionForm;
 
 
 /**
@@ -115,6 +125,12 @@ public class ProductPageController extends AbstractPageController
 
 	@Autowired
 	private ProductViewHistoryFacade productViewHistoryFacade;
+
+	@Autowired
+	private CustomerReviewReactionFacade customerReviewReactionFacade;
+
+	@Autowired
+	private ProductQuestionFacade productQuestionFacade;
 
 	@RequestMapping(value = PRODUCT_CODE_PATH_VARIABLE_PATTERN, method = RequestMethod.GET)
 	public String productDetail(@PathVariable("productCode") final String productCode, final Model model,
@@ -281,6 +297,37 @@ public class ProductPageController extends AbstractPageController
 		return ControllerConstants.Views.Pages.Product.WriteReview;
 	}
 
+	@RequestMapping(value = PRODUCT_CODE_PATH_VARIABLE_PATTERN + "/askQuestion", method = RequestMethod.POST)
+	public String askQuestion(@PathVariable("productCode") final String productCode, final Model model,
+							  final ProductQuestionForm form, final HttpServletRequest request,
+							  final RedirectAttributes redirectAttrs)
+			throws CMSItemNotFoundException
+	{
+		final ProductData productData = productFacade.getProductForCodeAndOptions(productCode, null);
+
+		ProductQuestionParameterData parameterData = new ProductQuestionParameterData();
+		parameterData.setProduct(productCode);
+		parameterData.setCategory(form.getCategoryCode());
+		parameterData.setQuestion(XSSFilterUtil.filter(form.getQuestion()));
+		parameterData.setHideUser(form.getHideUser());
+		parameterData.setOnlyForUser(form.getOnlyForUser());
+
+		ProductQuestionData question = null;
+		try{
+			question = productQuestionFacade.askQuestion(parameterData);
+		}catch (Exception e){
+			LOG.error("An error occured while trying to ask question for product " + productCode, e);
+		}
+
+		if (question != null){
+			GlobalMessages.addFlashMessage(redirectAttrs, GlobalMessages.CONF_MESSAGES_HOLDER, "question.confirmation.thank.you.title");
+		}else {
+			GlobalMessages.addFlashMessage(redirectAttrs, GlobalMessages.ERROR_MESSAGES_HOLDER, "question.confirmation.error.title");
+		}
+
+		return REDIRECT_PREFIX + productDataUrlResolver.resolve(productData);
+	}
+
 	protected void setUpReviewPage(final Model model, final String productCode) throws CMSItemNotFoundException
 	{
 		final ProductData productData = productFacade.getProductForCodeAndOptions(productCode, null);
@@ -318,6 +365,53 @@ public class ProductPageController extends AbstractPageController
 		GlobalMessages.addFlashMessage(redirectAttrs, GlobalMessages.CONF_MESSAGES_HOLDER, "review.confirmation.thank.you.title");
 
 		return REDIRECT_PREFIX + productDataUrlResolver.resolve(productData);
+	}
+
+	@ResponseBody
+	@RequestMapping(value = PRODUCT_CODE_PATH_VARIABLE_PATTERN + "/reactReview", method = RequestMethod.POST)
+	public Map<String, String> reactReview(@PathVariable("productCode") final String productCode, @RequestParam String reviewId,
+										   @RequestParam String reaction)
+			throws CMSItemNotFoundException
+	{
+
+		Map<String, String> response = new HashMap<>(2);
+
+		try {
+			customerReviewReactionFacade.storeReactionForCurrentUser(reviewId, CustomerReviewReactionType.valueOf(reaction));
+			response.put("success", Boolean.TRUE.toString());
+			response.put("message", getMessageSource().getMessage("review.reaction.success", null,
+					getI18nService().getCurrentLocale()));
+		}catch (Exception e){
+			LOG.error("An exception occured while trying to save reaction for review " + reviewId , e);
+			response.put("success", Boolean.FALSE.toString());
+			response.put("message", getMessageSource().getMessage("review.reaction.error", null,
+					getI18nService().getCurrentLocale()));
+		}
+
+		return response;
+	}
+
+	@ResponseBody
+	@RequestMapping(value = PRODUCT_CODE_PATH_VARIABLE_PATTERN + "/removeReviewReaction", method = RequestMethod.POST)
+	public Map<String, String> removeReaction(@PathVariable("productCode") final String productCode, @RequestParam String reviewId)
+			throws CMSItemNotFoundException
+	{
+
+		Map<String, String> response = new HashMap<>(2);
+
+		try {
+			customerReviewReactionFacade.removeReactionForCurrentUser(reviewId);
+			response.put("success", Boolean.TRUE.toString());
+			response.put("message", getMessageSource().getMessage("review.reaction.remove.success", null,
+					getI18nService().getCurrentLocale()));
+		}catch (Exception e){
+			LOG.error("An exception occured while trying to save reaction for review " + reviewId , e);
+			response.put("success", Boolean.FALSE.toString());
+			response.put("message", getMessageSource().getMessage("review.reaction.remove.error", null,
+					getI18nService().getCurrentLocale()));
+		}
+
+		return response;
 	}
 
 	@RequestMapping(value = PRODUCT_CODE_PATH_VARIABLE_PATTERN + "/futureStock", method = RequestMethod.GET)
@@ -405,7 +499,7 @@ public class ProductPageController extends AbstractPageController
 				ProductOption.URL, ProductOption.PRICE, ProductOption.SUMMARY, ProductOption.DESCRIPTION, ProductOption.GALLERY,
 				ProductOption.CATEGORIES, ProductOption.REVIEW, ProductOption.PROMOTIONS, ProductOption.CLASSIFICATION,
 				ProductOption.VARIANT_FULL, ProductOption.STOCK, ProductOption.VOLUME_PRICES, ProductOption.PRICE_RANGE,
-				ProductOption.DELIVERY_MODE_AVAILABILITY));
+				ProductOption.DELIVERY_MODE_AVAILABILITY, ProductOption.QUESTIONS));
 
 		options.addAll(extraOptions);
 
@@ -415,6 +509,8 @@ public class ProductPageController extends AbstractPageController
 		storeCmsPageInModel(model, getPageForProduct(productCode));
 		populateProductData(productData, model);
 		model.addAttribute(WebConstants.BREADCRUMBS_KEY, productBreadcrumbBuilder.getBreadcrumbs(productCode));
+		model.addAttribute(new ProductQuestionForm());
+		model.addAttribute("questionCategories", productQuestionFacade.getQuestionCategories());
 
 		if (CollectionUtils.isNotEmpty(productData.getVariantMatrix()))
 		{

@@ -82,6 +82,9 @@ ACC.tabs = {
 				ACC.ratingstars.bindRatingStars();
 				ACC.tabs.showingAllReviews();
 			}
+			if($(".js-review-reaction").length > 0){
+				ACC.reactreviews.bindReactReviews();
+			}
 		}, 'html');
 	},
 	

@@ -11,6 +11,8 @@
 <c:url value="${product.url}/reviewhtml/3" var="getPageOfReviewsUrl"/>
 <c:url value="${product.url}/reviewhtml/all" var="getAllReviewsUrl"/>
 <c:url value="${product.url}/review" var="productReviewActionUrl"/>
+<c:url value="${product.url}/reactReview" var="reactReviewUrl"/>
+<c:url value="${product.url}/removeReviewReaction" var="removeReviewReactionUrl"/>
 
 <div class="tab-review">
 	<div class="review-pagination-bar">
@@ -54,7 +56,9 @@
 
 	</div>
 
-	<ul id="reviews" class="review-list" data-reviews="${fn:escapeXml(getPageOfReviewsUrl)}"  data-allreviews="${fn:escapeXml(getAllReviewsUrl)}"></ul>
+	<ul id="reviews" class="review-list" data-reviews="${fn:escapeXml(getPageOfReviewsUrl)}"  data-allreviews="${fn:escapeXml(getAllReviewsUrl)}"
+	    data-react-review="${reactReviewUrl}"
+	    data-remove-react-review="${removeReviewReactionUrl}"></ul>
 
 	<div class="review-pagination-bar">
 

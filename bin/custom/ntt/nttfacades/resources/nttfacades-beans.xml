@@ -6,8 +6,50 @@
 
 	<enum class="de.hybris.platform.commercefacades.product.ProductOption">
 		<value>BADGES</value>
+		<value>QUESTIONS</value>
 	</enum>
 
+	<!--Questions and Answers Data-->
+	<bean class="tr.nttdata.bootcamp.facades.product.data.ProductQuestionData">
+		<property name="question" type="java.lang.String"/>
+		<property name="answer" type="java.lang.String"/>
+		<property name="category" type="tr.nttdata.bootcamp.facades.product.data.ProductQuestionCategoryData"/>
+		<property name="user" type="de.hybris.platform.commercefacades.user.data.CustomerData"/>
+		<property name="hideUser" type="java.lang.Boolean"/>
+		<property name="onlyForUser" type="java.lang.Boolean"/>
+	</bean>
+	
+	<bean class="tr.nttdata.bootcamp.facades.product.data.ProductQuestionCategoryData">
+		<property name="code" type="java.lang.String"/>
+		<property name="name" type="java.lang.String"/>
+	</bean>
+
+	<bean class="tr.nttdata.bootcamp.facades.product.data.ProductQuestionParameterData">
+		<property name="product" type="java.lang.String"/>
+		<property name="question" type="java.lang.String"/>
+		<property name="category" type="java.lang.String"/>
+		<property name="hideUser" type="boolean"/>
+		<property name="onlyForUser" type="boolean"/>
+	</bean>
+
+	<!---->
+	<bean class="de.hybris.platform.commercefacades.product.data.ReviewData">
+		<property name="reactions" type="java.util.Map&lt;tr.nttdata.bootcamp.core.enums.CustomerReviewReactionType, java.lang.Long>"/>
+		<property name="userReactions" type="java.util.List&lt;tr.nttdata.bootcamp.facades.product.data.CustomerReviewReactionData>"/>
+		<property name="userReaction" type="tr.nttdata.bootcamp.core.enums.CustomerReviewReactionType"/>
+	</bean>
+
+	<bean class="tr.nttdata.bootcamp.facades.product.data.CustomerReviewReactionTypeData">
+		<property name="code" type="java.lang.String"/>
+		<property name="name" type="java.lang.String"/>
+		<property name="sequence" type="java.lang.Integer"/>
+		<property name="icon" type="de.hybris.platform.commercefacades.product.data.ImageData"/>
+	</bean>
+
+	<bean class="tr.nttdata.bootcamp.facades.product.data.CustomerReviewReactionData">
+		<property name="type" type="tr.nttdata.bootcamp.facades.product.data.CustomerReviewReactionTypeData"/>
+		<property name="count" type="java.lang.Long"/>
+	</bean>
 
 	<bean class="de.hybris.platform.commercefacades.order.data.AbstractOrderData">
 		<property name="customerNote" type="java.lang.String"/>
@@ -18,6 +60,7 @@
 		<property name="badges" type="java.util.List&lt;tr.nttdata.bootcamp.facades.product.data.ProductBadgeData>"/>
 		<property name="totalViewCount" type="Integer"/>
 		<property name="bestSellerCount" type="java.lang.Long"/>
+		<property name="questions" type="java.util.List&lt;tr.nttdata.bootcamp.facades.product.data.ProductQuestionData>"/>
 	</bean>
 
 	<bean class="tr.nttdata.bootcamp.facades.product.data.GenderData">

@@ -12,6 +12,117 @@
 		
 	<context:annotation-config/>
 
+	<!--Questions and Answers-->
+	<alias name="defaultProductQuestionFacade" alias="productQuestionFacade"/>
+	<bean id="defaultProductQuestionFacade" class="tr.nttdata.bootcamp.facades.product.impl.DefaultProductQuestionFacade">
+		<property name="productService" ref="productService"/>
+		<property name="productQuestionService" ref="productQuestionService"/>
+		<property name="productQuestionConverter" ref="productQuestionConverter"/>
+		<property name="productQuestionCategoryConverter" ref="productQuestionCategoryConverter"/>
+		<property name="productQuestionParameterConverter" ref="productQuestionParameterConverter"/>
+	</bean>
+
+	<alias name="defaultProductQuestionPopulator" alias="productQuestionPopulator"/>
+	<bean id="defaultProductQuestionPopulator" class="tr.nttdata.bootcamp.facades.populators.ProductQuestionPopulator">
+		<property name="productQuestionCategoryConverter" ref="productQuestionCategoryConverter"/>
+		<property name="customerConverter" ref="customerConverter"/>
+	</bean>
+
+	<alias name="defaultProductQuestionConverter" alias="productQuestionConverter"/>
+	<bean id="defaultProductQuestionConverter" parent="abstractPopulatingConverter">
+		<property name="targetClass" value="tr.nttdata.bootcamp.facades.product.data.ProductQuestionData"/>
+		<property name="populators">
+			<list>
+				<ref bean="productQuestionPopulator"/>
+			</list>
+		</property>
+	</bean>
+
+	<alias name="defaultProductQuestionCategoryPopulator" alias="productQuestionCategoryPopulator"/>
+	<bean id="defaultProductQuestionCategoryPopulator"
+		  class="tr.nttdata.bootcamp.facades.populators.ProductQuestionCategoryPopulator"/>
+
+	<alias name="defaultProductQuestionCategoryConverter" alias="productQuestionCategoryConverter"/>
+	<bean id="defaultProductQuestionCategoryConverter" parent="abstractPopulatingConverter">
+		<property name="targetClass" value="tr.nttdata.bootcamp.facades.product.data.ProductQuestionCategoryData"/>
+		<property name="populators">
+			<list>
+				<ref bean="productQuestionCategoryPopulator"/>
+			</list>
+		</property>
+	</bean>
+
+	<alias name="defaultProductQuestionParameterPopulator" alias="productQuestionParameterPopulator"/>
+	<bean id="defaultProductQuestionParameterPopulator"
+		  class="tr.nttdata.bootcamp.facades.populators.ProductQuestionParameterPopulator">
+		<property name="productService" ref="productService"/>
+		<property name="productQuestionService" ref="productQuestionService"/>
+	</bean>
+
+	<alias name="defaultProductQuestionParameterConverter" alias="productQuestionParameterConverter"/>
+	<bean id="defaultProductQuestionParameterConverter" parent="abstractPopulatingConverter">
+		<property name="targetClass" value="tr.nttdata.bootcamp.core.product.parameter.ProductQuestionParameter"/>
+		<property name="populators">
+			<list>
+				<ref bean="productQuestionParameterPopulator"/>
+			</list>
+		</property>
+	</bean>
+
+	<alias name="defaultProductQuestionsPopulator" alias="productQuestionsPopulator"/>
+	<bean id="defaultProductQuestionsPopulator" class="tr.nttdata.bootcamp.facades.populators.ProductQuestionsPopulator">
+		<property name="productQuestionService" ref="productQuestionService"/>
+		<property name="productQuestionConverter" ref="productQuestionConverter"/>
+	</bean>
+
+	<bean parent="configurablePopulatorModification">
+		<property name="target" ref="productConfiguredPopulator"/>
+		<property name="keyType" value="de.hybris.platform.commercefacades.product.ProductOption"/>
+		<property name="key" value="QUESTIONS"/>
+		<property name="add" ref="productQuestionsPopulator"/>
+	</bean>
+
+	<bean id="productQuestionAnsweredEmailContext" class="tr.nttdata.bootcamp.facades.process.email.context.ProductQuestionAnsweredEmailContext" parent="abstractEmailContext" scope="prototype" >
+		<property name="customerConverter" ref="customerConverter"/>
+		<property name="productQuestionConverter" ref="productQuestionConverter"/>
+	</bean>
+
+	<!--React to Reviews-->
+	<alias name="defaultCustomerReviewReactionFacade" alias="customerReviewReactionFacade"/>
+	<bean id="defaultCustomerReviewReactionFacade" class="tr.nttdata.bootcamp.facades.product.impl.DefaultCustomerReviewReactionFacade" >
+		<property name="customerReviewReactionService" ref="customerReviewReactionService"/>
+		<property name="modelService" ref="modelService"/>
+		<property name="userService" ref="userService"/>
+		<property name="customerReviewReactionTypeConverter" ref="customerReviewReactionTypeConverter"/>
+	</bean>
+
+	<alias name="defaultCustomerReviewReactionPopulator" alias="customerReviewReactionPopulator"/>
+	<bean id="defaultCustomerReviewReactionPopulator" class="tr.nttdata.bootcamp.facades.populators.CustomerReviewReactionPopulator">
+		<property name="customerReviewReactionService" ref="customerReviewReactionService"/>
+		<property name="userService" ref="userService"/>
+		<property name="customerReviewReactionTypeConverter" ref="customerReviewReactionTypeConverter"/>
+	</bean>
+	<bean parent="modifyPopulatorList">
+		<property name="list" ref="customerReviewConverter"/>
+		<property name="add" ref="customerReviewReactionPopulator"/>
+	</bean>
+
+	<alias name="defaultCustomerReviewReactionTypePopulator" alias="customerReviewReactionTypePopulator"/>
+	<bean id="defaultCustomerReviewReactionTypePopulator" class="tr.nttdata.bootcamp.facades.populators.CustomerReviewReactionTypePopulator">
+		<property name="typeService" ref="typeService"/>
+		<property name="imageConverter" ref="imageConverter"/>
+	</bean>
+	<alias name="defaultCustomerReviewReactionTypeConverter" alias="customerReviewReactionTypeConverter"/>
+	<bean id="defaultCustomerReviewReactionTypeConverter" parent="abstractPopulatingConverter">
+		<property name="targetClass" value="tr.nttdata.bootcamp.facades.product.data.CustomerReviewReactionTypeData"/>
+		<property name="populators">
+			<list>
+				<ref bean="customerReviewReactionTypePopulator"/>
+			</list>
+		</property>
+	</bean>
+
+
 	<!--Sorting by Popularity-->
 
 	<alias name="defaultProductViewHistoryFacade" alias="productViewHistoryFacade"/>
@@ -95,8 +206,6 @@
 		<property name="list" ref="extendedCartConverter"/>
 		<property name="add" ref="cartCustomerNotePopulator"/>
 	</bean>
-
-
 
 	<!-- Search Result Product Populator -->
 	<bean id="nttSearchResultProductPopulator" parent="defaultCommerceSearchResultProductPopulator"

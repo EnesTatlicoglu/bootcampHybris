@@ -1,0 +1,56 @@
+$contentCatalog = electronicsContentCatalog
+$contentCV = catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]), CatalogVersion.version[default=Staged])[default=$contentCatalog:Staged]
+$wideContent = CMSImageComponent, BannerComponent, SimpleBannerComponent, CMSLinkComponent, CMSParagraphComponent
+$lang = en
+
+# Import modulegen config properties into impex macros
+UPDATE GenericItem[processor = de.hybris.platform.commerceservices.impex.impl.ConfigPropertyImportProcessor]; pk[unique = true]
+$jarResourceCms = $config-jarResourceCmsValue
+$emailPackageName = $config-emailContextPackageName
+$emailResource = $config-emailResourceValue
+
+# Email velocity templates
+INSERT_UPDATE RendererTemplate; code[unique = true]                             ; contextClass; rendererType(code)[default = 'velocity']
+                              ; electronics_Email_Product_Question_Answered_Body    ; $emailPackageName.ProductQuestionAnsweredEmailContext
+                              ; electronics_Email_Product_Question_Answered_Subject ; $emailPackageName.ProductQuestionAnsweredEmailContext
+
+# CMS components and Email velocity templates
+UPDATE RendererTemplate; code[unique = true]                             ; description[lang = $lang]             ; templateScript[lang = $lang, translator = de.hybris.platform.commerceservices.impex.impl.FileLoaderValueTranslator]
+                       ; electronics_Email_Product_Question_Answered_Body    ; "Product Question Answered Email Body"    ; $emailResource/email-productQuestionAnsweredBody.vm
+                       ; electronics_Email_Product_Question_Answered_Subject ; "Product Question Answered Email Subject" ; $emailResource/email-productQuestionAnsweredSubject.vm
+
+
+# Email page Template
+INSERT_UPDATE EmailPageTemplate; $contentCV[unique = true]; uid[unique = true]                   ; name                                     ; active; frontendTemplateName         ; subject(code)                                       ; htmlTemplate(code)                               ; restrictedPageTypes(code)
+                               ;                          ; ProductQuestionAnsweredEmailTemplate ; Product Question Answered Email Template ; true  ; productQuestionAnsweredEmail ; electronics_Email_Product_Question_Answered_Subject ; electronics_Email_Product_Question_Answered_Body ; EmailPage
+
+# Templates for CMS Cockpit Page Edit
+UPDATE EmailPageTemplate; $contentCV[unique = true]; uid[unique = true]                   ; velocityTemplate[translator = de.hybris.platform.commerceservices.impex.impl.FileLoaderValueTranslator]
+                        ;                          ; ProductQuestionAnsweredEmailTemplate ; $jarResourceCms/structure-view/structure_productQuestionAnsweredEmailTemplate.vm
+
+INSERT_UPDATE ContentSlotName; name[unique = true]; template(uid, $contentCV)[unique = true][default = 'ProductQuestionAnsweredEmailTemplate']; validComponentTypes(code); compTypeGroup(code)
+                             ; SiteLogo           ;                                                                                           ; $wideContent             ; email
+                             ; TopContent         ;                                                                                           ; $wideContent             ; email
+                             ; BottomContent      ;                                                                                           ; $wideContent             ; email
+
+# Create Content Slots
+INSERT_UPDATE ContentSlot; $contentCV[unique = true]; uid[unique = true]                  ; name                                           ; active
+                         ;                          ; ProductQuestionAnsweredEmailTopSlot ; Default productQuestionAnswered Email Top Slot ; true
+
+# Bind Content Slots to Email Page Templates
+INSERT_UPDATE ContentSlotForTemplate; $contentCV[unique = true]; uid[unique = true]                         ; position[unique = true]; pageTemplate(uid, $contentCV)[unique = true][default = 'ProductQuestionAnsweredEmailTemplate']; contentSlot(uid, $contentCV)[unique = true]; allowOverwrite
+                                    ;                          ; SiteLogo-ProductQuestionAnsweredEmail      ; SiteLogo               ;                                                                                               ; EmailSiteLogoSlot                          ; true
+                                    ;                          ; TopContent-ProductQuestionAnsweredEmail    ; TopContent             ;                                                                                               ; ProductQuestionAnsweredEmailTopSlot        ; true
+                                    ;                          ; BottomContent-ProductQuestionAnsweredEmail ; BottomContent          ;                                                                                               ; EmailBottomSlot                            ; true
+
+# Email Pages
+INSERT_UPDATE EmailPage; $contentCV[unique = true]; uid[unique = true]           ; name                            ; masterTemplate(uid, $contentCV)      ; defaultPage; approvalStatus(code)[default = 'approved']
+                       ;                          ; ProductQuestionAnsweredEmail ; Product Question Answered Email ; ProductQuestionAnsweredEmailTemplate ; true       ;
+
+UPDATE EmailPage; $contentCV[unique = true]; uid[unique = true]           ; previewImage(code, $contentCV)
+                ;                          ; ProductQuestionAnsweredEmail ; EmailPageModel_preview
+
+# Email Pages
+UPDATE EmailPage;$contentCV[unique=true];uid[unique=true];fromEmail[lang=$lang];fromName[lang=$lang]
+                ;;ProductQuestionAnsweredEmail;"customerservices@hybris.com";"Kundendienst"
+

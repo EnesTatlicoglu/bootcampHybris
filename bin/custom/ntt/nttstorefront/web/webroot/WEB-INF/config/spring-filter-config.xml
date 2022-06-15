@@ -153,6 +153,7 @@
 		<property name="refererExcludeUrlSet" ref="refererExcludeUrlSet"/>
 		<property name="pathMatcher" ref="defaultPathMatcher"/>
 		<property name="commerceCommonI18NService" ref="commerceCommonI18NService"/>
+		<property name="userIPService" ref="userIPService"/>
 	</bean>
 
 	<bean id="consentFilter" class="tr.nttdata.bootcamp.storefront.filters.ConsentFilter">

@@ -13,4 +13,12 @@
         <property name="soldCount" type="java.lang.Long"/>
     </bean>
 
+    <bean class="tr.nttdata.bootcamp.core.product.parameter.ProductQuestionParameter">
+        <property name="product" type="de.hybris.platform.core.model.product.ProductModel"/>
+        <property name="question" type="java.lang.String"/>
+        <property name="category" type="tr.nttdata.bootcamp.core.model.ProductQuestionCategoryModel"/>
+        <property name="hideUser" type="boolean"/>
+        <property name="onlyForUser" type="boolean"/>
+    </bean>
+    
 </beans>

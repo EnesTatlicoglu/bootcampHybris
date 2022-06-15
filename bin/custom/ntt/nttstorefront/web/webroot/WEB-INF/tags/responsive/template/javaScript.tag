@@ -64,6 +64,7 @@
 		<script src="${commonResourcePathHtml}/js/acc.productDetail.js"></script>
 		<script src="${commonResourcePathHtml}/js/acc.quickview.js"></script>
 		<script src="${commonResourcePathHtml}/js/acc.ratingstars.js"></script>
+		<script src="${commonResourcePathHtml}/js/acc.reactreviews.js"></script>
 		<script src="${commonResourcePathHtml}/js/acc.refinements.js"></script>
 		<script src="${commonResourcePathHtml}/js/acc.sanitizer.js"></script>
 		<script src="${commonResourcePathHtml}/js/acc.silentorderpost.js"></script>

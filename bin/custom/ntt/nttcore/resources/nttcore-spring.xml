@@ -18,6 +18,84 @@
 	<import resource="classpath:/nttcore/integration/hot-folder-store-apparel-spring.xml"/>
 	<import resource="classpath:/nttcore/integration/hot-folder-common-spring.xml"/>
 
+	<!--Questions and Answers-->
+	<alias name="defaultProductQuestionService" alias="productQuestionService"/>
+	<bean id="defaultProductQuestionService" class="tr.nttdata.bootcamp.core.product.service.impl.DefaultProductQuestionService">
+		<property name="productQuestionDAO" ref="productQuestionDAO"/>
+		<property name="userService" ref="userService"/>
+		<property name="modelService" ref="modelService"/>
+		<property name="commonI18NService" ref="commonI18NService"/>
+		<property name="baseSiteService" ref="baseSiteService"/>
+	</bean>
+
+	<alias name="defaultProductQuestionDAO" alias="productQuestionDAO"/>
+	<bean id="defaultProductQuestionDAO" class="tr.nttdata.bootcamp.core.product.dao.impl.DefaultProductQuestionDAO">
+		<property name="flexibleSearchService" ref="flexibleSearchService"/>
+	</bean>
+
+	<bean id="productQuestionPrepareInterceptor"
+		  class="tr.nttdata.bootcamp.core.interceptors.ProductQuestionPrepareInterceptor">
+		<property name="eventService" ref="eventService"/>
+	</bean>
+	<bean id="productQuestionPrepareInterceptorMapping"
+		  class="de.hybris.platform.servicelayer.interceptor.impl.InterceptorMapping">
+		<property name="interceptor" ref="productQuestionPrepareInterceptor"/>
+		<property name="typeCode" value="ProductQuestion"/>
+	</bean>
+
+	<bean id="productQuestionAnsweredEventListener"
+		  class="tr.nttdata.bootcamp.core.event.ProductQuestionAnsweredEventListener" parent="abstractEventListener">
+		<property name="modelService" ref="modelService"/>
+		<property name="businessProcessService" ref="businessProcessService"/>
+	</bean>
+
+	<bean id="generateProductQuestionAnsweredEmail" parent="abstractGenerateEmailAction">
+		<property name="frontendTemplateName" value="ProductQuestionAnsweredEmailTemplate"/>
+	</bean>
+
+	<bean id="productQuestionAnsweredEmailProcessDefinitionResource"
+		  class="de.hybris.platform.processengine.definition.ProcessDefinitionResource" >
+		<property name="resource" value="classpath:/nttcore/processes/productQuestionAnsweredEmailProcess.xml"/>
+	</bean>
+
+	<alias name="defaultProductQuestionAnsweredProcessContextStrategy" alias="productQuestionAnsweredProcessContextStrategy" />
+	<bean id="defaultProductQuestionAnsweredProcessContextStrategy"
+		  class="tr.nttdata.bootcamp.core.process.strategies.ProductQuestionAnsweredProcessContextStrategy"
+		  parent="abstractProcessContextStrategy"/>
+
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject" ref="processContextResolutionStrategyMap"/>
+		<property name="targetMethod" value="putAll"/>
+		<property name="arguments">
+			<map>
+				<entry value-ref="productQuestionAnsweredProcessContextStrategy">
+					<key>
+						<value type="java.lang.Class">tr.nttdata.bootcamp.core.model.ProductQuestionAnsweredProcessModel</value>
+					</key>
+				</entry>
+			</map>
+		</property>
+	</bean>
+
+	<!--React to Reviews-->
+	<alias name="defaultCustomerReviewReactionService" alias="customerReviewReactionService"/>
+	<bean id="defaultCustomerReviewReactionService"
+		  class="tr.nttdata.bootcamp.core.product.service.impl.DefaultCustomerReviewReactionService">
+		<property name="customerReviewReactionDao" ref="customerReviewReactionDao"/>
+		<property name="userService" ref="userService"/>
+		<property name="userIPService" ref="userIPService"/>
+		<property name="modelService" ref="modelService"/>
+	</bean>
+	
+	<alias name="defaultUserIPService" alias="userIPService"/>
+	<bean id="defaultUserIPService"
+		  class="tr.nttdata.bootcamp.core.user.service.impl.DefaultUserIPService">
+		<constructor-arg ref="sessionService"/>
+	</bean>
+
+	<alias name="defaultCustomerReviewReactionDao" alias="customerReviewReactionDao"/>
+	<bean id="defaultCustomerReviewReactionDao" class="tr.nttdata.bootcamp.core.product.dao.impl.DefaultCustomerReviewReactionDao"/>
+
 	<!--Best Sellers OPTIONAL-->
 	<bean id="productIsBestSellerValueResolver"
 		  class="tr.nttdata.bootcamp.core.search.solrfacetsearch.provider.impl.ProductIsBestSellerValueResolver"
@@ -37,8 +115,8 @@
 		<property name="bestSellerProductService" ref="bestSellerProductService"/>
 	</bean>
 
-	<alias name="DefaultBestSellerProductService" alias="bestSellerProductService"/>
-	<bean id="DefaultBestSellerProductService"
+	<alias name="defaultBestSellerProductService" alias="bestSellerProductService"/>
+	<bean id="defaultBestSellerProductService"
 		  class="tr.nttdata.bootcamp.core.product.service.impl.DefaultBestSellerProductService">
 		<property name="bestSellerProductDao" ref="bestSellerProductDao"/>
 		<property name="bestSellerConfigDao" ref="bestSellerConfigDao"/>

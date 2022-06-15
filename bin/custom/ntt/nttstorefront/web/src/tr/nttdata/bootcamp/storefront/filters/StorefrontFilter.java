@@ -23,6 +23,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.util.PathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
+import tr.nttdata.bootcamp.core.user.service.UserIPService;
 
 
 /**
@@ -39,6 +40,7 @@ public class StorefrontFilter extends OncePerRequestFilter
 	private Set<String> refererExcludeUrlSet;
 	private PathMatcher pathMatcher;
 	private CommerceCommonI18NService commerceCommonI18NService;
+	private UserIPService userIPService;
 
 	@Override
 	public void doFilterInternal(final HttpServletRequest request, final HttpServletResponse response,
@@ -104,6 +106,8 @@ public class StorefrontFilter extends OncePerRequestFilter
 		if (StringUtils.isNotBlank(currentLanguage)){
 			getStoreSessionFacade().setCurrentLanguage(currentLanguage);
 		}
+
+		getUserIPService().storeUserIPFromRequest(request);
 	}
 
 	protected StoreSessionFacade getStoreSessionFacade()
@@ -168,5 +172,13 @@ public class StorefrontFilter extends OncePerRequestFilter
 	public void setCommerceCommonI18NService(final CommerceCommonI18NService commerceCommonI18NService)
 	{
 		this.commerceCommonI18NService = commerceCommonI18NService;
+	}
+
+	public UserIPService getUserIPService() {
+		return userIPService;
+	}
+
+	public void setUserIPService(UserIPService userIPService) {
+		this.userIPService = userIPService;
 	}
 }

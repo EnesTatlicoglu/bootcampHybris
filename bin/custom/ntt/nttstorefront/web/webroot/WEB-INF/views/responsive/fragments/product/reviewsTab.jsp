@@ -42,7 +42,17 @@
 				<c:set var="reviewDate" value="${review.date}" />
 				<span class="date"> (<fmt:formatDate value="${reviewDate}" pattern="dd/MM/yyyy" />)</span>
 			</div>
-
+			<c:if test="${not empty review.userReactions}">
+                <div id="reactions-${review.id}" class="reactions">
+                    <c:forEach items="${review.userReactions}" var="reaction">
+                        <span class="js-review-reaction reaction-${reaction.type.code}" data-review-id="${review.id}"
+                        data-reaction-type="${reaction.type.code}"
+                        data-user-reacted="${reaction.type.code == review.userReaction}">
+                            ${reaction.type.name} (<c:out value="${reaction.count}"/>)
+                        </span>
+                    </c:forEach>
+                </div>
+			</c:if>
 		</li>
 	</c:forEach>
 </c:if>

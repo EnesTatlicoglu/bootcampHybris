@@ -32,6 +32,17 @@
         </enumtype>
         
         <enumtype code="BadgeGroup" autocreate="true" generate="true" dynamic="true"/>
+        
+        <enumtype code="CustomerReviewReactionType" autocreate="true" generate="true" dynamic="false">
+            <value code="LIKE"/>
+            <value code="DISLIKE"/>
+        </enumtype>
+        
+        <enumtype code="ProductQuestionStatus" autocreate="true" generate="true" dynamic="false">
+            <value code="PENDING"/>
+            <value code="ANSWERED"/>
+            <value code="PUBLISHED"/>
+        </enumtype>
 
     </enumtypes>
     
@@ -43,6 +54,15 @@
             </sourceElement>
             <targetElement type="ProductBadge" qualifier="badges" collectiontype="set" cardinality="many">
                 <modifiers read="true" write="true" optional="true" search="true"/>
+            </targetElement>
+        </relation>
+        
+        <relation code="CustomerReview2CustomerReviewReaction" localized="false">
+            <sourceElement type="CustomerReview" qualifier="review" cardinality="one">
+                <modifiers optional="false"/>
+            </sourceElement>
+            <targetElement type="CustomerReviewReaction" qualifier="reactions" cardinality="many">
+                <modifiers partof="true"/>
             </targetElement>
         </relation>
     </relations>
@@ -186,7 +206,101 @@
                 </attribute>
             </attributes>
         </itemtype>
+        
+        <itemtype code="CustomerReviewReaction" generate="true" autocreate="true">
+            <deployment table="customerreviewreactions" typecode="20604"/>
+            <attributes>
+                <attribute qualifier="reactionType" type="CustomerReviewReactionType">
+                    <persistence type="property"/>
+                    <modifiers optional="false"/>
+                </attribute>
+                <attribute qualifier="user" type="User">
+                    <persistence type="property"/>
+                    <modifiers optional="false"/>
+                </attribute>
+                <attribute qualifier="userIp" type="java.lang.String">
+                    <persistence type="property"/>
+                </attribute>
+            </attributes>
+        </itemtype>
+        
+        <itemtype code="ProductQuestionCategory" autocreate="true" generate="true">
+            <deployment table="productquestioncategory" typecode="20605"/>
+            <attributes>
+                <attribute qualifier="code" type="java.lang.String">
+                    <persistence type="property"/>
+                    <modifiers unique="true" optional="false"/>
+                </attribute>
+                <attribute qualifier="name" type="localized:java.lang.String">
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="visible" type="boolean" >
+                    <persistence type="property"/>
+                </attribute>
+            </attributes>
+            <indexes>
+                <index name="codeIDX">
+                    <key attribute="code"/>
+                </index>
+            </indexes>
+        </itemtype>
+        
+        <itemtype code="ProductQuestion" autocreate="true" generate="true">
+            <deployment table="productquestion" typecode="20606"/>
+            <attributes>
+                <attribute qualifier="product" type="Product">
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="site" type="BaseSite">
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="question" type="java.lang.String">
+                    <persistence type="property">
+                        <columntype>
+                            <value>HYBRIS.LONG_STRING</value>
+                        </columntype>
+                    </persistence>
+                </attribute>
+                <attribute qualifier="answer" type="java.lang.String">
+                    <persistence type="property">
+                        <columntype>
+                            <value>HYBRIS.LONG_STRING</value>
+                        </columntype>
+                    </persistence>
+                </attribute>
+                <attribute qualifier="status" type="ProductQuestionStatus">
+                    <persistence type="property"/>
+                    <defaultvalue>em().getEnumerationValue("ProductQuestionStatus" , "PENDING")</defaultvalue>
+                </attribute>
+                <attribute qualifier="language" type="Language">
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="category" type="ProductQuestionCategory">
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="user" type="User">
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="hideUser" type="boolean">
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="onlyForUser" type="boolean">
+                    <persistence type="property"/>
+                </attribute>
+            </attributes>
+        </itemtype>
 
+        <itemtype code="ProductQuestionAnsweredProcess" extends="BusinessProcess"
+                  autocreate="true" generate="true">
+            <description>It represents storefront business process.</description>
+                <attributes>
+                    <attribute qualifier="question" type="ProductQuestion">
+                        <persistence type="property" />
+                        <description>Attribute contains base site object that will be used in the process.</description>
+                    </attribute>
+                </attributes>
+        </itemtype>
+        
 
         <!-- TypeGroups are for structure of this file only -->
 
