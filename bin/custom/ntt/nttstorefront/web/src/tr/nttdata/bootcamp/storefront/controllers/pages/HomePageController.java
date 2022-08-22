@@ -10,6 +10,7 @@ import de.hybris.platform.cms2.exceptions.CMSItemNotFoundException;
 import de.hybris.platform.cms2.model.pages.AbstractPageModel;
 import de.hybris.platform.cms2.model.pages.ContentPageModel;
 
+import de.hybris.platform.commercefacades.user.UserFacade;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -19,6 +20,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import tr.nttdata.bootcamp.core.product.dao.FlexibleSearchExampleDao;
+
+import javax.annotation.Resource;
 
 
 /**
@@ -33,6 +37,9 @@ public class HomePageController extends AbstractPageController
 	private static final String ACCOUNT_CONFIRMATION_CLOSE_TITLE = "account.confirmation.close.title";
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(HomePageController.class);
+
+	@Resource(name = "flexibleSearchExampleDao")
+	private FlexibleSearchExampleDao flexibleSearchExampleDao;
 
 	@RequestMapping(method = RequestMethod.GET)
 	public String home(@RequestParam(value = WebConstants.CLOSE_ACCOUNT, defaultValue = "false") final boolean closeAcc,
@@ -55,6 +62,15 @@ public class HomePageController extends AbstractPageController
 		updatePageTitle(model, contentPage);
 
 		LOGGER.info("Entered HomePageController");
+
+		LOGGER.info("Entered FlexibleSearchExampleDao");
+
+		flexibleSearchExampleDao.getAllOrders();
+		flexibleSearchExampleDao.getAllOrderEntries();
+		flexibleSearchExampleDao.getAllProducts();
+		flexibleSearchExampleDao.getAllPriceRows();
+		flexibleSearchExampleDao.getAllUsers();
+		flexibleSearchExampleDao.getProducts();
 
 		return getViewForPage(model);
 	}

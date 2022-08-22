@@ -18,6 +18,12 @@
 	<import resource="classpath:/nttcore/integration/hot-folder-store-apparel-spring.xml"/>
 	<import resource="classpath:/nttcore/integration/hot-folder-common-spring.xml"/>
 
+	<!--FlexibleSearchExample-->
+	<alias name="defaultFlexibleSearchExampleDao" alias="flexibleSearchExampleDao"/>
+	<bean id="defaultFlexibleSearchExampleDao" class="tr.nttdata.bootcamp.core.product.dao.impl.DefaultFlexibleSearchExampleDao">
+		<property name="flexibleSearchService" ref="flexibleSearchService"/>
+	</bean>
+
 	<!--Questions and Answers-->
 	<alias name="defaultProductQuestionService" alias="productQuestionService"/>
 	<bean id="defaultProductQuestionService" class="tr.nttdata.bootcamp.core.product.service.impl.DefaultProductQuestionService">
