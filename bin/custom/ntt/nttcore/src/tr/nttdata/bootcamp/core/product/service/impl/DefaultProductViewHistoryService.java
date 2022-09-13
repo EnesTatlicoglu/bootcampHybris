@@ -3,11 +3,14 @@ package tr.nttdata.bootcamp.core.product.service.impl;
 import de.hybris.platform.core.model.product.ProductModel;
 import de.hybris.platform.core.model.user.UserModel;
 import de.hybris.platform.servicelayer.model.ModelService;
+import tr.nttdata.bootcamp.core.model.ProductBadgeModel;
 import tr.nttdata.bootcamp.core.model.ProductViewHistoryModel;
 import tr.nttdata.bootcamp.core.product.dao.ProductViewHistoryDao;
 import tr.nttdata.bootcamp.core.product.service.ProductViewHistoryService;
 
 public class DefaultProductViewHistoryService implements ProductViewHistoryService {
+
+
 
     private ProductViewHistoryDao productViewHistoryDao;
     private ModelService modelService;
@@ -18,6 +21,8 @@ public class DefaultProductViewHistoryService implements ProductViewHistoryServi
         viewHistory.setProduct(product);
         viewHistory.setUser(user);
         getModelService().save(viewHistory);
+        getModelService().create(ProductModel.class);
+        getModelService().create(ProductBadgeModel.class);
     }
 
     @Override
