@@ -242,6 +242,18 @@
 		<property name="interceptor" ref="productBadgePrepareInterceptor"/>
 		<property name="typeCode" value="ProductBadge"/>
 	</bean>
+
+	<bean id="denemeInitDefaultsInterceptor" class="tr.nttdata.bootcamp.core.interceptors.DenemeInitDefaultsInterceptor"/>
+
+	<bean id="productDenemeInitDefaultsInterceptor" class="de.hybris.platform.servicelayer.interceptor.impl.InterceptorMapping">
+		<property name="interceptor" ref="denemeInitDefaultsInterceptor"/>
+		<property name="typeCode" value="Product"/>
+	</bean>
+
+	<bean id="productBadgeDenemeInitDefaultsInterceptor" class="de.hybris.platform.servicelayer.interceptor.impl.InterceptorMapping">
+		<property name="interceptor" ref="denemeInitDefaultsInterceptor"/>
+		<property name="typeCode" value="ProductBadge"/>
+	</bean>
 	
 	<!-- BADGES -->
 	<alias name="defaultProductBadgeDao" alias="productBadgeDao"/>

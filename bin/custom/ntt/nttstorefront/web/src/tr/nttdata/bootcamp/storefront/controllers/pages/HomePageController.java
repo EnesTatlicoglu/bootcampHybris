@@ -72,6 +72,8 @@ public class HomePageController extends AbstractPageController
 		flexibleSearchExampleDao.getAllUsers();
 		flexibleSearchExampleDao.getProducts();
 
+
+
 		return getViewForPage(model);
 	}
 
